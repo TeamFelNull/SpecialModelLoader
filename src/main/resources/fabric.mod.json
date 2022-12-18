@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "id": "ikisugi-fabric-obj-loader",
+  "version": "${version}",
+  "name": "Ikisugi Fabric OBJ Loader",
+  "description": "MOD for using OBJ model in Fabric.\nThe ikisugi obj model loader mod...",
+  "authors": [
+    "FelNull developers",
+    "MORIMORI0317"
+  ],
+  "contact": {
+    "email": "teamfelnull@felnull.dev"
+  },
+  "license": "CC0-1.0",
+  "icon": "assets/ikisugi-fabric-obj-loader/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "dev.felnull.ifol.IkisugiFabricOBJLoader"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.14.11",
+    "fabric-api": "*",
+    "minecraft": ">=1.19.3",
+    "java": ">=17"
+  },
+  "custom": {
+    "modmenu": {
+      "badges": [
+        "library"
+      ]
+    }
+  }
+}

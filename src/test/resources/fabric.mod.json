@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "id": "ikisugi-fabric-obj-loader-test",
+  "version": "1.0.0",
+  "name": "Ikisugi Fabric OBJ Loader Test",
+  "description": "The ikisugi test mod...",
+  "authors": [
+    "MORIMORI0317"
+  ],
+  "contact": {
+  },
+  "license": "IKISUGI",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "dev.felnull.ifoltest.IFOLTest"
+    ],
+    "fabric-datagen": [
+      "dev.felnull.ifoltest.data.IFOLTestDataGenerator"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.14.11",
+    "fabric-api": "*",
+    "java": ">=17"
+  }
+}
