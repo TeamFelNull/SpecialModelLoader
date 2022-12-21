@@ -1,2 +1,5 @@
-// 1.19.3	2022-12-18T20:50:06.1929406	Ikisugi Fabric OBJ Loader Test/Model Definitions
+// 1.19.3	2022-12-21T02:17:54.9003299	Ikisugi Fabric OBJ Loader Test/Model Definitions
+610a382ba13fff6ad5aa2b6f34ba3323ba306a5e assets\ikisugi-fabric-obj-loader-test\models\block\normal_model_block.json
+be7c1244120810783ffa888d9f96db327b639e7a assets\ikisugi-fabric-obj-loader-test\blockstates\normal_model_block.json
 0d9583e2061d5521057055784c7e3d511e74af42 assets\ikisugi-fabric-obj-loader-test\models\item\normal_model_item.json
+41f8fbbda151d0a0dec09fbfd0e4e88d2ccffd10 assets\ikisugi-fabric-obj-loader-test\models\item\normal_model_block.json

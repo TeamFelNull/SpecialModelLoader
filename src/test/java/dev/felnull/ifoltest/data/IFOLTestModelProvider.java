@@ -1,5 +1,6 @@
 package dev.felnull.ifoltest.data;
 
+import dev.felnull.ifoltest.block.IFOLTestBlocks;
 import dev.felnull.ifoltest.item.IFOLTestItems;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
@@ -14,7 +15,7 @@ public class IFOLTestModelProvider extends FabricModelProvider {
 
     @Override
     public void generateBlockStateModels(BlockModelGenerators blockStateModelGenerator) {
-
+        blockStateModelGenerator.createTrivialCube(IFOLTestBlocks.NORMAL_MODEL_BLOCK);
     }
 
     @Override

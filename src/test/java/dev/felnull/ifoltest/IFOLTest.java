@@ -1,5 +1,6 @@
 package dev.felnull.ifoltest;
 
+import dev.felnull.ifoltest.block.IFOLTestBlocks;
 import dev.felnull.ifoltest.item.IFOLTestItems;
 import net.fabricmc.api.ModInitializer;
 
@@ -9,5 +10,6 @@ public class IFOLTest implements ModInitializer {
     @Override
     public void onInitialize() {
         IFOLTestItems.init();
+        IFOLTestBlocks.init();
     }
 }

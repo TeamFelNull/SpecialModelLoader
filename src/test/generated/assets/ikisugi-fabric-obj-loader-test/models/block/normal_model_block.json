@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "ikisugi-fabric-obj-loader-test:block/normal_model_block"
+  }
+}

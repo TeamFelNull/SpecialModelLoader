@@ -16,7 +16,7 @@
   "environment": "client",
   "entrypoints": {
     "client": [
-      "dev.felnull.ifol.IkisugiFabricOBJLoader"
+      "dev.felnull.ifol.impl.IkisugiFabricOBJLoader"
     ]
   },
   "depends": {
@@ -25,6 +25,9 @@
     "minecraft": ">=1.19.3",
     "java": ">=17"
   },
+  "mixins": [
+    "ikisugi-fabric-obj-loader.mixins.json"
+  ],
   "custom": {
     "modmenu": {
       "badges": [

@@ -11,7 +11,7 @@ version = project.mod_version
 group = project.maven_group
 
 sourceSets {
-    testmodClient {
+    test {
         resources {
             srcDirs += [
                     'src/test/generated'
@@ -28,7 +28,7 @@ loom {
             name = "Testmod Client"
             source sourceSets.test
         }
-        
+
         testmodDatagen {
             server()
 
@@ -55,6 +55,8 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+
+    modImplementation 'de.javagl:obj:0.3.0'
 }
 
 processResources {

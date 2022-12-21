@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "ikisugi-fabric-obj-loader-test:block/obj_model_block"
+    }
+  }
+}
