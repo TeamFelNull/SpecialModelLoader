@@ -1,5 +1,10 @@
-// 1.19.3	2022-12-21T02:17:54.9003299	Ikisugi Fabric OBJ Loader Test/Model Definitions
+// 1.19.3	2022-12-22T05:53:52.7902065	Ikisugi Fabric OBJ Loader Test/Model Definitions
+a6aeff63eaf7bc1ade6ee165316f816f3370b965 assets\ikisugi-fabric-obj-loader-test\models\item\facing_obj_model_block.json
+48ba07c248503075a3699a77167714344489ee01 assets\ikisugi-fabric-obj-loader-test\blockstates\facing_obj_model_block.json
+08dd902fe8a1ec9e2fc13c1d3b564df295f33271 assets\ikisugi-fabric-obj-loader-test\models\block\facing_model_block.json
 610a382ba13fff6ad5aa2b6f34ba3323ba306a5e assets\ikisugi-fabric-obj-loader-test\models\block\normal_model_block.json
-be7c1244120810783ffa888d9f96db327b639e7a assets\ikisugi-fabric-obj-loader-test\blockstates\normal_model_block.json
 0d9583e2061d5521057055784c7e3d511e74af42 assets\ikisugi-fabric-obj-loader-test\models\item\normal_model_item.json
+be7c1244120810783ffa888d9f96db327b639e7a assets\ikisugi-fabric-obj-loader-test\blockstates\normal_model_block.json
+b1d3e67c480a50536c9085fe858055b0ec49eb29 assets\ikisugi-fabric-obj-loader-test\models\item\facing_model_block.json
 41f8fbbda151d0a0dec09fbfd0e4e88d2ccffd10 assets\ikisugi-fabric-obj-loader-test\models\item\normal_model_block.json
+fa17053fa2b6c957b3eb449ceb942e4634240f45 assets\ikisugi-fabric-obj-loader-test\blockstates\facing_model_block.json

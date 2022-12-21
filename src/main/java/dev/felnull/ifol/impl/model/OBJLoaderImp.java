@@ -103,7 +103,7 @@ public class OBJLoaderImp implements OBJLoader {
             String[] paths = location.getPath().split("/");
             paths = ArrayUtils.remove(paths, paths.length - 1);
             var loc = new ResourceLocation(location.getNamespace(), String.join("/", paths));
-            //return new OBJUnbakedModelModelOld(obj, loadMtl(resourceManager, loc, obj.getMtlFileNames()), transforms, option);
+
             return new OBJUnbakedModelModel(obj, loadMtl(resourceManager, loc, obj.getMtlFileNames()), transforms, option);
         } catch (IOException e) {
             throw new ModelProviderException("Failed to load obj file", e);

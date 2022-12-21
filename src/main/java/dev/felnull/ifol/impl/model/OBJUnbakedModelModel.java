@@ -70,11 +70,11 @@ public class OBJUnbakedModelModel implements UnbakedModel {
 
     private void emitFace(QuadEmitter emitter, ModelState modelState, Function<Material, TextureAtlasSprite> textureGetter, String materialName, Obj fObj, ObjFace face) {
         for (int i = 0; i < face.getNumVertices(); i++) {
-            emitVertex(i, i, emitter, modelState, fObj, face, false);
+            emitVertex(i, i, emitter, modelState, fObj, face);
         }
 
         if (face.getNumVertices() == 3)
-            emitVertex(3, 2, emitter, modelState, fObj, face, true);
+            emitVertex(3, 2, emitter, modelState, fObj, face);
 
         var smtl = mtl.get(materialName);
 
@@ -98,15 +98,13 @@ public class OBJUnbakedModelModel implements UnbakedModel {
         emitter.emit();
     }
 
-    private void emitVertex(int index, int vertexNum, QuadEmitter emitter, ModelState modelState, Obj fObj, ObjFace face, boolean degenerate) {
+    private void emitVertex(int index, int vertexNum, QuadEmitter emitter, ModelState modelState, Obj fObj, ObjFace face) {
         var vt = fObj.getVertex(face.getVertexIndex(vertexNum));
         var vertex = new Vector3f(vt.getX(), vt.getY(), vt.getZ());
 
-        if (!degenerate) {
-            vertex.add(-0.5f, -0.5f, -0.5f);
-            vertex.rotate(modelState.getRotation().getLeftRotation());
-            vertex.add(0.5f, 0.5f, 0.5f);
-        }
+        vertex.add(-0.5f, -0.5f, -0.5f);
+        vertex.rotate(modelState.getRotation().getLeftRotation());
+        vertex.add(0.5f, 0.5f, 0.5f);
 
         var normal = fObj.getNormal(face.getNormalIndex(vertexNum));
         var tex = fObj.getTexCoord(face.getTexCoordIndex(vertexNum));
