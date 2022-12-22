@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "id": "ikisugi-fabric-obj-loader-test",
+  "id": "special-model-loader-test",
   "version": "1.0.0",
-  "name": "Ikisugi Fabric OBJ Loader Test",
+  "name": "Special Model Loader Test",
   "description": "The ikisugi test mod...",
   "authors": [
     "MORIMORI0317"
@@ -13,10 +13,10 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "dev.felnull.ifoltest.IFOLTest"
+      "dev.felnull.smltest.SMLTest"
     ],
     "fabric-datagen": [
-      "dev.felnull.ifoltest.data.IFOLTestDataGenerator"
+      "dev.felnull.smltest.data.SMLTestDataGenerator"
     ]
   },
   "depends": {

@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "special-model-loader-test:block/obj_model_block",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "special-model-loader-test:block/obj_model_block"
+    },
+    "facing=south": {
+      "model": "special-model-loader-test:block/obj_model_block",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "special-model-loader-test:block/obj_model_block",
+      "y": 270
+    }
+  }
+}

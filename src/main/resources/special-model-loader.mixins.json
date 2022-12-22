@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "dev.felnull.specialmodelloader.impl.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+  ],
+  "client": [
+    "BlockModelAccessor"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

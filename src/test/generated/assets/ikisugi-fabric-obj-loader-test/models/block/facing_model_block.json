@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/orientable",
-  "textures": {
-    "front": "ikisugi-fabric-obj-loader-test:block/facing_model_block_front",
-    "side": "ikisugi-fabric-obj-loader-test:block/facing_model_block_side",
-    "top": "ikisugi-fabric-obj-loader-test:block/facing_model_block_top"
-  }
-}

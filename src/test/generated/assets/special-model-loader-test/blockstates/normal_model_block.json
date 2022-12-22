@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "special-model-loader-test:block/normal_model_block"
+    }
+  }
+}

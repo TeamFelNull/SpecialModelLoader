@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "ikisugi-fabric-obj-loader-test:item/normal_model_item"
-  }
-}

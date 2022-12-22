@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/orientable",
+  "textures": {
+    "front": "special-model-loader-test:block/facing_model_block_front",
+    "side": "special-model-loader-test:block/facing_model_block_side",
+    "top": "special-model-loader-test:block/facing_model_block_top"
+  }
+}
