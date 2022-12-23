@@ -15,6 +15,9 @@
     "main": [
       "dev.felnull.smltest.SMLTest"
     ],
+    "client": [
+      "dev.felnull.smltest.client.SMLTestClient"
+    ],
     "fabric-datagen": [
       "dev.felnull.smltest.data.SMLTestDataGenerator"
     ]

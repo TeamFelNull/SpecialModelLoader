@@ -1,18 +1,19 @@
-package dev.felnull.specialmodelloader.impl.model;
+package dev.felnull.specialmodelloader.impl.model.obj;
 
 import de.javagl.obj.Mtl;
 import de.javagl.obj.Obj;
 import de.javagl.obj.ObjFace;
 import de.javagl.obj.ObjSplitting;
-import dev.felnull.specialmodelloader.api.ObjOption;
+import dev.felnull.specialmodelloader.api.model.obj.ObjModelOption;
+import dev.felnull.specialmodelloader.impl.model.SpecialBaseUnbakedModel;
 import net.fabricmc.fabric.api.renderer.v1.Renderer;
 import net.fabricmc.fabric.api.renderer.v1.RendererAccess;
 import net.fabricmc.fabric.api.renderer.v1.mesh.MeshBuilder;
 import net.fabricmc.fabric.api.renderer.v1.mesh.MutableQuadView;
 import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
 import net.fabricmc.fabric.impl.client.indigo.renderer.IndigoRenderer;
+import net.minecraft.client.renderer.block.model.BlockModel;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
-import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.*;
 import net.minecraft.resources.ResourceLocation;
@@ -26,14 +27,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
-public class ObjUnbakedModelModel implements UnbakedModel {
-    private static final Material MISSING = new Material(InventoryMenu.BLOCK_ATLAS, MissingTextureAtlasSprite.getLocation());
+public class ObjUnbakedModelModel extends SpecialBaseUnbakedModel {
     private final Obj obj;
     private final Map<String, Mtl> mtl;
     private final ItemTransforms itemTransforms;
-    private final ObjOption option;
+    private final ObjModelOption option;
 
-    public ObjUnbakedModelModel(Obj obj, Map<String, Mtl> mtl, ItemTransforms itemTransforms, ObjOption option) {
+    public ObjUnbakedModelModel(Obj obj, Map<String, Mtl> mtl, ItemTransforms itemTransforms, ObjModelOption option) {
+        super(option);
         this.obj = obj;
         this.mtl = mtl;
         this.itemTransforms = itemTransforms;
@@ -64,8 +65,7 @@ public class ObjUnbakedModelModel implements UnbakedModel {
                 emitFace(emitter, modelState, textureGetter, name, model, model.getFace(i));
             }
         });
-
-        return new ObjModel(builder.build(), itemTransforms, textureGetter.apply(MISSING));
+        return new ObjModel(getModelOption().isUseAmbientOcclusion(), getGuiLight().lightLikeBlock(), textureGetter.apply(getParticleLocation()), getModelOption().getTransforms(), builder.build());
     }
 
     private void emitFace(QuadEmitter emitter, ModelState modelState, Function<Material, TextureAtlasSprite> textureGetter, String materialName, Obj fObj, ObjFace face) {
@@ -92,7 +92,6 @@ public class ObjUnbakedModelModel implements UnbakedModel {
             emitter.spriteBake(0, textureGetter.apply(MISSING), flg);
         }
 
-
         emitter.spriteColor(0, -1, -1, -1, -1);
 
         emitter.emit();
@@ -112,5 +111,10 @@ public class ObjUnbakedModelModel implements UnbakedModel {
         emitter.pos(index, vertex.x(), vertex.y(), vertex.z())
                 .normal(index, normal.getX(), normal.getY(), normal.getZ())
                 .sprite(index, 0, new Vec2(tex.getX(), tex.getY()));
+    }
+
+    @Override
+    public BlockModel.GuiLight getGuiLight() {
+        return option.getGuiLight();
     }
 }
