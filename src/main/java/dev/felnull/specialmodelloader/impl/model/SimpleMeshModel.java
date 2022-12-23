@@ -1,7 +1,6 @@
-package dev.felnull.specialmodelloader.impl.model.obj;
+package dev.felnull.specialmodelloader.impl.model;
 
 import com.google.common.base.Suppliers;
-import dev.felnull.specialmodelloader.impl.model.SpecialBaseModel;
 import net.fabricmc.fabric.api.renderer.v1.mesh.Mesh;
 import net.fabricmc.fabric.api.renderer.v1.model.ModelHelper;
 import net.fabricmc.fabric.api.renderer.v1.render.RenderContext;
@@ -20,11 +19,11 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.function.Supplier;
 
-public class ObjModel extends SpecialBaseModel {
+public class SimpleMeshModel extends SpecialBaseModel {
     private final Mesh mesh;
     private final Supplier<List<BakedQuad>[]> quadCache;
 
-    public ObjModel(boolean useAmbientOcclusion, boolean usesBlockLight, TextureAtlasSprite particleIcon, ItemTransforms transforms, Mesh mesh) {
+    public SimpleMeshModel(boolean useAmbientOcclusion, boolean usesBlockLight, TextureAtlasSprite particleIcon, ItemTransforms transforms, Mesh mesh) {
         super(useAmbientOcclusion, usesBlockLight, particleIcon, transforms);
         this.mesh = mesh;
         this.quadCache = Suppliers.memoize(() -> ModelHelper.toQuadLists(mesh));

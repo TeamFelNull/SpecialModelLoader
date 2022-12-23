@@ -1,12 +1,10 @@
-package dev.felnull.specialmodelloader.impl.model;
+package dev.felnull.specialmodelloader.impl;
 
 import com.google.common.collect.ImmutableList;
 import com.google.gson.JsonObject;
 import dev.felnull.specialmodelloader.api.SpecialModelLoaderAPI;
-import dev.felnull.specialmodelloader.api.model.EmptyModelLoader;
 import dev.felnull.specialmodelloader.api.model.SpecialBaseLoader;
 import dev.felnull.specialmodelloader.api.model.obj.ObjModelLoader;
-import dev.felnull.specialmodelloader.impl.SpecialModelLoader;
 import dev.felnull.specialmodelloader.impl.model.obj.ObjModelLoaderImp;
 import dev.felnull.specialmodelloader.impl.util.JsonModelUtils;
 import net.fabricmc.fabric.api.client.model.ModelProviderException;
@@ -19,15 +17,12 @@ import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Unmodifiable;
 
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class SpecialModelLoaderAPIImpl implements SpecialModelLoaderAPI {
     public static final SpecialModelLoaderAPIImpl INSTANCE = new SpecialModelLoaderAPIImpl();
     private final ObjModelLoader objLoader = new ObjModelLoaderImp();
-    private final EmptyModelLoader emptyLoader = new EmptySpecialLoaderImpl();
-    private final List<SpecialBaseLoader> useLoaders = ImmutableList.of(emptyLoader, objLoader);
+    private final List<SpecialBaseLoader> loaders = ImmutableList.of(objLoader);
 
     @Override
     public @NotNull ObjModelLoader getObjLoader() {
@@ -35,40 +30,36 @@ public class SpecialModelLoaderAPIImpl implements SpecialModelLoaderAPI {
     }
 
     @Override
-    public @NotNull EmptyModelLoader getEmptyLoader() {
-        return emptyLoader;
-    }
-
-    @Override
-    public @Unmodifiable @NotNull List<SpecialBaseLoader> getUseLoaders() {
-        return useLoaders;
+    public @Unmodifiable @NotNull List<SpecialBaseLoader> getLoaders() {
+        return loaders;
     }
 
     @Override
     public @Nullable UnbakedModel loadModel(@NotNull ResourceManager resourceManager, @NotNull ResourceLocation modelLocation) throws ModelProviderException {
-        var bjo = readJson(resourceManager, modelLocation);
-
-       // System.out.println(modelLocation);
-
-        var myLoader = getLoader(modelLocation);
-        if (myLoader != null)
-            return bjo == null ? null : myLoader.loadModel(resourceManager, bjo);
-
-        JsonObject jo = bjo;
+        List<JsonObject> models = new ArrayList<>();
+        JsonObject jo = readJson(resourceManager, modelLocation);
         ResourceLocation location = JsonModelUtils.getParentLocation(jo);
         Set<ResourceLocation> aly = new HashSet<>();
 
         while (location != null) {
+            models.add(jo);
+
             if (aly.contains(location)) {
-                SpecialModelLoader.LOGGER.warn("Model parent specification is looping: {}", modelLocation);
+                SpecialModelLoader.LOGGER.warn("Model parent specification is looping: '{}', '{}'", modelLocation, location);
                 return null;
             }
+
             aly.add(location);
 
-            if (getLoader(location) != null)
-                return getEmptyLoader().loadModel(resourceManager, bjo);
+            var loader = getLoader(location);
+            if (loader != null) {
+                JsonObject ret = new JsonObject();
+                Collections.reverse(models);
+                models.forEach(r -> r.asMap().forEach((name, rlm) -> ret.add(name, rlm.deepCopy())));
+                return loader.loadModel(resourceManager, ret);
+            }
 
-            jo = readJson(resourceManager, modelLocation);
+            jo = readJson(resourceManager, location);
             location = JsonModelUtils.getParentLocation(jo);
         }
 
@@ -76,7 +67,7 @@ public class SpecialModelLoaderAPIImpl implements SpecialModelLoaderAPI {
     }
 
     private SpecialBaseLoader getLoader(ResourceLocation location) {
-        return useLoaders.stream()
+        return getLoaders().stream()
                 .filter(r -> r.isUse(location))
                 .limit(1)
                 .findFirst()

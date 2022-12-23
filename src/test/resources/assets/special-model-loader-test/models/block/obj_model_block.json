@@ -2,6 +2,7 @@
   "parent": "special-model-loader:builtin/obj",
   "model": "special-model-loader-test:models/block/apple/apple.obj",
   "gui_light": "side",
+  "particle": "block/sand",
   "display": {
     "gui": {
       "rotation": [

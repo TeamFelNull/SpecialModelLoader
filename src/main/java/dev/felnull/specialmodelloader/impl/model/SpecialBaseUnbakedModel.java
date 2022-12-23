@@ -25,5 +25,9 @@ public abstract class SpecialBaseUnbakedModel implements UnbakedModel {
         return MISSING;
     }
 
-    public abstract BlockModel.GuiLight getGuiLight();
+    public BlockModel.GuiLight getGuiLight() {
+        if (modelOption.getGuiLight() == null)
+            return BlockModel.GuiLight.SIDE;
+        return modelOption.getGuiLight();
+    }
 }

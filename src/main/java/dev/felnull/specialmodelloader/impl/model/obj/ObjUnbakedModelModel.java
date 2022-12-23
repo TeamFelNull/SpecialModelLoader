@@ -5,6 +5,7 @@ import de.javagl.obj.Obj;
 import de.javagl.obj.ObjFace;
 import de.javagl.obj.ObjSplitting;
 import dev.felnull.specialmodelloader.api.model.obj.ObjModelOption;
+import dev.felnull.specialmodelloader.impl.model.SimpleMeshModel;
 import dev.felnull.specialmodelloader.impl.model.SpecialBaseUnbakedModel;
 import net.fabricmc.fabric.api.renderer.v1.Renderer;
 import net.fabricmc.fabric.api.renderer.v1.RendererAccess;
@@ -12,8 +13,6 @@ import net.fabricmc.fabric.api.renderer.v1.mesh.MeshBuilder;
 import net.fabricmc.fabric.api.renderer.v1.mesh.MutableQuadView;
 import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
 import net.fabricmc.fabric.impl.client.indigo.renderer.IndigoRenderer;
-import net.minecraft.client.renderer.block.model.BlockModel;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.*;
 import net.minecraft.resources.ResourceLocation;
@@ -30,14 +29,12 @@ import java.util.function.Function;
 public class ObjUnbakedModelModel extends SpecialBaseUnbakedModel {
     private final Obj obj;
     private final Map<String, Mtl> mtl;
-    private final ItemTransforms itemTransforms;
     private final ObjModelOption option;
 
-    public ObjUnbakedModelModel(Obj obj, Map<String, Mtl> mtl, ItemTransforms itemTransforms, ObjModelOption option) {
+    public ObjUnbakedModelModel(Obj obj, Map<String, Mtl> mtl, ObjModelOption option) {
         super(option);
         this.obj = obj;
         this.mtl = mtl;
-        this.itemTransforms = itemTransforms;
         this.option = option;
     }
 
@@ -65,7 +62,7 @@ public class ObjUnbakedModelModel extends SpecialBaseUnbakedModel {
                 emitFace(emitter, modelState, textureGetter, name, model, model.getFace(i));
             }
         });
-        return new ObjModel(getModelOption().isUseAmbientOcclusion(), getGuiLight().lightLikeBlock(), textureGetter.apply(getParticleLocation()), getModelOption().getTransforms(), builder.build());
+        return new SimpleMeshModel(getModelOption().isUseAmbientOcclusion(), getGuiLight().lightLikeBlock(), textureGetter.apply(getParticleLocation()), getModelOption().getTransforms(), builder.build());
     }
 
     private void emitFace(QuadEmitter emitter, ModelState modelState, Function<Material, TextureAtlasSprite> textureGetter, String materialName, Obj fObj, ObjFace face) {
@@ -113,8 +110,4 @@ public class ObjUnbakedModelModel extends SpecialBaseUnbakedModel {
                 .sprite(index, 0, new Vec2(tex.getX(), tex.getY()));
     }
 
-    @Override
-    public BlockModel.GuiLight getGuiLight() {
-        return option.getGuiLight();
-    }
 }

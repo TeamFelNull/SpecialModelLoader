@@ -2,7 +2,6 @@ package dev.felnull.specialmodelloader.impl.handler;
 
 import dev.felnull.specialmodelloader.api.SpecialModelLoaderAPI;
 import dev.felnull.specialmodelloader.api.event.SpecialModelLoaderEvents;
-import dev.felnull.specialmodelloader.impl.SpecialModelLoader;
 import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
 import net.fabricmc.fabric.api.client.model.ModelProviderContext;
 import net.fabricmc.fabric.api.client.model.ModelProviderException;
@@ -21,7 +20,6 @@ public class SMLModelResourceHandler implements ModelResourceProvider {
 
     public static void init() {
         ModelLoadingRegistry.INSTANCE.registerResourceProvider(SMLModelResourceHandler::new);
-        SpecialModelLoaderEvents.LOAD_SCOPE.register(SMLModelResourceHandler::isLoadScope);
     }
 
     @Override
@@ -29,9 +27,5 @@ public class SMLModelResourceHandler implements ModelResourceProvider {
         if (SpecialModelLoaderEvents.LOAD_SCOPE.invoker().isLoadScope(resourceId))
             return SpecialModelLoaderAPI.getInstance().loadModel(resourceManager, resourceId);
         return null;
-    }
-
-    private static boolean isLoadScope(ResourceLocation location) {
-        return SpecialModelLoader.MODID.equals(location.getNamespace()) || "sml".equals(location.getNamespace());
     }
 }
