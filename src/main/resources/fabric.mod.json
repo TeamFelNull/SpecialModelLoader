@@ -3,15 +3,16 @@
   "id": "special-model-loader",
   "version": "${version}",
   "name": "Special Model Loader",
-  "description": "MOD for using OBJ model in Fabric.\nThe ikisugi obj model loader mod...",
+  "description": "Support for loading special models.\nThe ikisugi model loader mod...",
   "authors": [
     "FelNull developers",
     "MORIMORI0317"
   ],
   "contact": {
-    "email": "teamfelnull@felnull.dev"
+    "email": "teamfelnull@felnull.dev",
+    "sources": "https://github.com/TeamFelnull/SpecialModelLoader"
   },
-  "license": "CC0-1.0",
+  "license": "MIT License",
   "icon": "assets/special-model-loader/icon.png",
   "environment": "client",
   "entrypoints": {
