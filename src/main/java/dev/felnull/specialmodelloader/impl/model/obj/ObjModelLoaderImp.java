@@ -30,10 +30,11 @@ public class ObjModelLoaderImp implements ObjModelLoader {
             return null;
 
         var modelLocation = new ResourceLocation(modelJson.get("model").getAsString());
-        return loadModel_(resourceManager, modelLocation, ObjModelOption.parse(modelJson));
+        return loadModel(resourceManager, modelLocation, ObjModelOption.parse(modelJson));
     }
 
-    private @Nullable UnbakedModel loadModel_(@NotNull ResourceManager resourceManager, @NotNull ResourceLocation location, @NotNull ObjModelOption option) throws ModelProviderException {
+    @Override
+    public @Nullable UnbakedModel loadModel(@NotNull ResourceManager resourceManager, @NotNull ResourceLocation location, @NotNull ObjModelOption option) throws ModelProviderException {
         var res = resourceManager.getResource(location);
         if (res.isEmpty())
             return null;

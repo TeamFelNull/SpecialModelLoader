@@ -1,6 +1,6 @@
 {
-  "parent": "special-model-loader:builtin/obj",
-  "model": "special-model-loader-test:models/item/sea_cheken_pack/sea_chicken.obj",
+  "parent": "builtin/entity",
+  "gui_light": "side",
   "display": {
     "gui": {
       "rotation": [

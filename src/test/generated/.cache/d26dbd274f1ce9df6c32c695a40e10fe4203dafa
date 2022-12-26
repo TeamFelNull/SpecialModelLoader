@@ -1,10 +1,11 @@
-// 1.19.3	2022-12-23T00:05:11.2909406	Special Model Loader Test/Model Definitions
+// 1.19.3	2022-12-26T04:36:34.9552903	Special Model Loader Test/Model Definitions
 29b5a4f3bf537fd7d26d638c82162277ceed8152 assets\special-model-loader-test\models\item\normal_model_item.json
 4a055d002eadd089b14d077e47d9e72e85f9472c assets\special-model-loader-test\models\item\facing_model_block.json
+92aa0969bc41ff465724c5cce1982fc91c53a428 assets\special-model-loader-test\models\item\obj_model_item.json
 7824bc90c0db968f2c3ae639cb7df5a2f758c2c5 assets\special-model-loader-test\models\item\facing_obj_model_block.json
 fa1e09e05b7d30b6619abb0d937468d2c8ffd88c assets\special-model-loader-test\models\item\normal_model_block.json
 e61360716d4882fb639d854551e14f9a9130c6ac assets\special-model-loader-test\models\block\facing_model_block.json
-2026021089f1eb67bb59680a39566b65319b9c1d assets\special-model-loader-test\blockstates\facing_obj_model_block.json
-09d86e9b817b52a30a7afdc219645cb7f67cd5c8 assets\special-model-loader-test\blockstates\normal_model_block.json
 2fe12a7b7f26a1434370749403837d2301d330c4 assets\special-model-loader-test\blockstates\facing_model_block.json
+09d86e9b817b52a30a7afdc219645cb7f67cd5c8 assets\special-model-loader-test\blockstates\normal_model_block.json
+2026021089f1eb67bb59680a39566b65319b9c1d assets\special-model-loader-test\blockstates\facing_obj_model_block.json
 d8c8c782516cf0bc564998dcaed70a1592d59fb7 assets\special-model-loader-test\models\block\normal_model_block.json

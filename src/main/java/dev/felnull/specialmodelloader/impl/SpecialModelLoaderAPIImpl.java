@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import dev.felnull.specialmodelloader.api.SpecialModelLoaderAPI;
 import dev.felnull.specialmodelloader.api.model.SpecialBaseLoader;
 import dev.felnull.specialmodelloader.api.model.obj.ObjModelLoader;
+import dev.felnull.specialmodelloader.impl.model.ForgeObjModelCompat;
 import dev.felnull.specialmodelloader.impl.model.obj.ObjModelLoaderImp;
 import dev.felnull.specialmodelloader.impl.util.JsonModelUtils;
 import net.fabricmc.fabric.api.client.model.ModelProviderException;
@@ -38,6 +39,11 @@ public class SpecialModelLoaderAPIImpl implements SpecialModelLoaderAPI {
     public @Nullable UnbakedModel loadModel(@NotNull ResourceManager resourceManager, @NotNull ResourceLocation modelLocation) throws ModelProviderException {
         List<JsonObject> models = new ArrayList<>();
         JsonObject jo = readJson(resourceManager, modelLocation);
+
+        var forgeModel = ForgeObjModelCompat.getObjModelData(jo);
+        if (forgeModel != null)
+            return getObjLoader().loadModel(resourceManager, forgeModel.getLeft(), forgeModel.getRight());
+
         ResourceLocation location = JsonModelUtils.getParentLocation(jo);
         Set<ResourceLocation> aly = new HashSet<>();
 
