@@ -6,6 +6,11 @@ plugins {
     id "com.modrinth.minotaur" version "2.4.4"
 }
 
+if (System.getenv("GITHUB_REF") != null && System.getenv("GITHUB_REF").startsWith("refs/tags/v")) {
+    if (System.getenv("GITHUB_REF").substring("refs/tags/v".length()) != project.mod_version)
+        throw new IllegalStateException("The version and tag specification are different")
+}
+
 sourceCompatibility = JavaVersion.VERSION_17
 targetCompatibility = JavaVersion.VERSION_17
 
@@ -155,12 +160,12 @@ curseforge {
                 requiredDependency "fabric-api"
             }
 
-            mainArtifact(file("${project.buildDir}/libs/${rootProject.archives_base_name}-mc${rootProject.minecraft_version}-${project.mod_version}.jar")) {
-                displayName = "${rootProject.mod_display_name}-${rootProject.minecraft_version}-${project.mod_version}"
+            mainArtifact(file("${project.buildDir}/libs/${project.archives_base_name}-mc${project.minecraft_version}-${project.mod_version}.jar")) {
+                displayName = "${project.mod_display_name}-${project.minecraft_version}-${project.mod_version}"
             }
 
-            addArtifact(file("${project.buildDir}/libs/${rootProject.archives_base_name}-mc${rootProject.minecraft_version}-${project.mod_version}-sources.jar")) {
-                displayName = "${rootProject.mod_display_name}-${rootProject.minecraft_version}-${project.mod_version}-sources"
+            addArtifact(file("${project.buildDir}/libs/${project.archives_base_name}-mc${project.minecraft_version}-${project.mod_version}-sources.jar")) {
+                displayName = "${project.mod_display_name}-${project.minecraft_version}-${project.mod_version}-sources"
             }
             afterEvaluate {
                 uploadTask.dependsOn("build")
@@ -176,12 +181,12 @@ curseforge {
 if (System.getenv('modrinthapikey') != null && "${modrinth_id}" != '') {
     modrinth {
         token = System.getenv('modrinthapikey')
-        projectId = "${rootProject.modrinth_id}"
-        versionName = "${rootProject.mod_display_name}-${rootProject.minecraft_version}-${project.mod_version}"
-        versionNumber = "${rootProject.minecraft_version}-${project.mod_version}"
+        projectId = "${project.modrinth_id}"
+        versionName = "${project.mod_display_name}-${project.minecraft_version}-${project.mod_version}"
+        versionNumber = "${project.minecraft_version}-${project.mod_version}"
         versionType = "${project.release_type}"
-        uploadFile = file("${project.buildDir}/libs/${rootProject.archives_base_name}-mc${rootProject.minecraft_version}-${project.mod_version}.jar")
-        gameVersions = List.of(rootProject.minecraft_version)
+        uploadFile = file("${project.buildDir}/libs/${project.archives_base_name}-mc${project.minecraft_version}-${project.mod_version}.jar")
+        gameVersions = List.of(project.minecraft_version)
         loaders = ["fabric", "quilt"]
         dependencies {
             required.project("P7dR8mSH")//Fabric API
