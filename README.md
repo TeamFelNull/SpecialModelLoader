@@ -1,6 +1,7 @@
 # SpecialModelLoader
 
-Library for using OBJ models in Fabric  
+Library for using OBJ models in Fabric.  
+Developed inspired by FOML and Myron.  
 Please see the [Wiki](https://github.com/TeamFelnull/SpecialModelLoader/wiki) for more information.
 
 ## Using libraries
