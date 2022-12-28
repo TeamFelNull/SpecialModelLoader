@@ -9,3 +9,7 @@ pluginManagement {
     }
 }
 
+if (System.getenv("GITHUB_REF") != null && System.getenv("GITHUB_REF").startsWith("refs/tags/v")) {
+    if (System.getenv("GITHUB_REF").substring("refs/tags/v".length()) != project.mod_version)
+        throw new IllegalStateException("The version and tag specification are different")
+}

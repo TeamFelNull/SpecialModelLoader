@@ -2,6 +2,8 @@ plugins {
     id 'fabric-loom' version '1.0-SNAPSHOT'
     id "com.github.johnrengelman.shadow" version "7.1.2"
     id 'maven-publish'
+    id 'com.matthewprenger.cursegradle' version '1.4.0'
+    id "com.modrinth.minotaur" version "2.4.4"
 }
 
 sourceCompatibility = JavaVersion.VERSION_17
@@ -44,7 +46,7 @@ loom {
         }
     }
 }
-test.dependsOn runTestmodDatagen
+//test.dependsOn runTestmodDatagen
 
 repositories {
 
@@ -131,6 +133,58 @@ publishing {
                 username = "felnull"
                 password = "${project.maven_put_pass}" != '' ? "${project.maven_put_pass}" : System.getenv('mavenpassword')
             }
+        }
+    }
+}
+
+curseforge {
+    if (System.getenv('curesforgeapikey') != null && "${project.curesforge_id}" != '') {
+        apiKey = System.getenv('curesforgeapikey')
+        project {
+            id = "${rootProject.curesforge_id}"
+
+            changelog = '';
+
+            releaseType = "${rootProject.release_type}"
+            addGameVersion "${rootProject.minecraft_version}"
+            addGameVersion 'Java 17'
+            addGameVersion "Fabric"
+            addGameVersion "Quilt"
+
+            relations {
+                requiredDependency "fabric-api"
+            }
+
+            mainArtifact(file("${project.buildDir}/libs/${rootProject.archives_base_name}-mc${rootProject.minecraft_version}-${project.mod_version}.jar")) {
+                displayName = "${rootProject.mod_display_name}-${rootProject.minecraft_version}-${project.mod_version}"
+            }
+
+            addArtifact(file("${project.buildDir}/libs/${rootProject.archives_base_name}-mc${rootProject.minecraft_version}-${project.mod_version}-sources.jar")) {
+                displayName = "${rootProject.mod_display_name}-${rootProject.minecraft_version}-${project.mod_version}-sources"
+            }
+            afterEvaluate {
+                uploadTask.dependsOn("build")
+            }
+        }
+    }
+    options {
+        forgeGradleIntegration = false
+    }
+}
+
+
+if (System.getenv('modrinthapikey') != null && "${modrinth_id}" != '') {
+    modrinth {
+        token = System.getenv('modrinthapikey')
+        projectId = "${rootProject.modrinth_id}"
+        versionName = "${rootProject.mod_display_name}-${rootProject.minecraft_version}-${project.mod_version}"
+        versionNumber = "${rootProject.minecraft_version}-${project.mod_version}"
+        versionType = "${project.release_type}"
+        uploadFile = file("${project.buildDir}/libs/${rootProject.archives_base_name}-mc${rootProject.minecraft_version}-${project.mod_version}.jar")
+        gameVersions = List.of(rootProject.minecraft_version)
+        loaders = ["fabric", "quilt"]
+        dependencies {
+            required.project("P7dR8mSH")//Fabric API
         }
     }
 }
