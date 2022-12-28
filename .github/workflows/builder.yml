@@ -39,7 +39,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUBTOKEN }}
         with:
           tag_name: ${{ github.ref }}
-          release_name: BetterTaskbar - ${{ github.ref }}
+          release_name: SpecialModelLoader - ${{ github.ref }}
           body: |
             The New Release!
             Build by ${{ github.actor }}
