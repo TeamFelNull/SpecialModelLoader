@@ -1,9 +1,10 @@
 plugins {
-    id 'fabric-loom' version '1.0-SNAPSHOT'
+    id 'fabric-loom' version '1.1-SNAPSHOT'
     id "com.github.johnrengelman.shadow" version "7.1.2"
     id 'maven-publish'
     id 'com.matthewprenger.cursegradle' version '1.4.0'
     id "com.modrinth.minotaur" version "2.4.4"
+    id 'org.jetbrains.changelog' version "2.0.0"
 }
 
 if (System.getenv("GITHUB_REF") != null && System.getenv("GITHUB_REF").startsWith("refs/tags/v")) {
@@ -53,6 +54,17 @@ loom {
 }
 //test.dependsOn runTestmodDatagen
 
+changelog {
+    repositoryUrl = rootProject.repository_url
+    introduction = """
+    Changelog to track updates for this mod.  
+    Add your changes to Unreleased if you want to commit.  
+    Please write according to [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
+    """
+    combinePreReleases = false
+}
+
+
 repositories {
 
 }
@@ -100,6 +112,9 @@ tasks.withType(JavaCompile).configureEach {
 
 java {
     withSourcesJar()
+
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }
 
 jar {
