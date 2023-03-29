@@ -163,7 +163,8 @@ curseforge {
         project {
             id = "${rootProject.curesforge_id}"
 
-            changelog = '';
+            changelogType = 'markdown'
+            changelog = file('./LATEST_CHANGELOG.md')
 
             releaseType = "${rootProject.release_type}"
             addGameVersion "${rootProject.minecraft_version}"
@@ -206,5 +207,6 @@ if (System.getenv('modrinthapikey') != null && "${modrinth_id}" != '') {
         dependencies {
             required.project("P7dR8mSH")//Fabric API
         }
+        changelog = file('./LATEST_CHANGELOG.md').text
     }
 }
