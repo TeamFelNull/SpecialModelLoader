@@ -19,7 +19,7 @@ Please see the Wiki for more information or see [SpecialModelLoader-Example](htt
 ## Discord Support
 Feel free to ask for additional support in the Discord server, just open a thread in the `#special-model-loader` channel.
 
-![Discord](https://img.shields.io/discord/436404936151007241?label=discord&logo=discord&logoColor=ffffff&style=for-the-badge)
+<a href="https://discord.gg/X9BUF9A"><img src="https://img.shields.io/discord/436404936151007241?label=discord&logo=discord&logoColor=ffffff&style=for-the-badge"></a>
 
 ## Using Libraries:
 
