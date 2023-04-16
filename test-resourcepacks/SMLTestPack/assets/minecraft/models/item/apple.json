@@ -1,0 +1,6 @@
+{
+  "parent": "special-model-loader:builtin/obj",
+  "ambientocclusion": true,
+  "flip_v": true,
+  "model": "minecraft:models/item/3d_apple.obj"
+}
