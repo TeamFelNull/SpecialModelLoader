@@ -24,7 +24,7 @@ public class SMLTestItems {
         register("dynamic_obj_model_item", DYNAMIC_OBJ_MODEL_ITEM);
 
         ItemGroupEvents.MODIFY_ENTRIES_ALL.register((group, entries) -> {
-            if (group == CreativeModeTabs.BUILDING_BLOCKS) {
+            if (group == BuiltInRegistries.CREATIVE_MODE_TAB.get(CreativeModeTabs.BUILDING_BLOCKS)) {
                 entries.accept(NORMAL_MODEL_ITEM);
                 entries.accept(OBJ_MODEL_ITEM);
                 entries.accept(OBJ2_MODEL_ITEM);

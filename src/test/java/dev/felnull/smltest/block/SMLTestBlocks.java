@@ -10,14 +10,14 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.material.MapColor;
 
 public class SMLTestBlocks {
-    public static final Block NORMAL_MODEL_BLOCK = new Block(FabricBlockSettings.of(Material.AMETHYST, MaterialColor.DEEPSLATE));
-    public static final Block OBJ_MODEL_BLOCK = new Block(FabricBlockSettings.of(Material.AMETHYST, MaterialColor.DEEPSLATE));
-    public static final Block FACING_MODEL_BLOCK = new FacingBlock(FabricBlockSettings.of(Material.AMETHYST, MaterialColor.DEEPSLATE));
-    public static final Block FACING_OBJ_MODEL_BLOCK = new FacingBlock(FabricBlockSettings.of(Material.AMETHYST, MaterialColor.DEEPSLATE));
+    public static final Block NORMAL_MODEL_BLOCK = new Block(FabricBlockSettings.create().sounds(SoundType.AMETHYST).mapColor(MapColor.DEEPSLATE));
+    public static final Block OBJ_MODEL_BLOCK = new Block(FabricBlockSettings.create().sounds(SoundType.AMETHYST).mapColor(MapColor.DEEPSLATE));
+    public static final Block FACING_MODEL_BLOCK = new FacingBlock(FabricBlockSettings.create().sounds(SoundType.AMETHYST).mapColor(MapColor.DEEPSLATE));
+    public static final Block FACING_OBJ_MODEL_BLOCK = new FacingBlock(FabricBlockSettings.create().sounds(SoundType.AMETHYST).mapColor(MapColor.DEEPSLATE));
 
     public static void init() {
 
@@ -27,7 +27,7 @@ public class SMLTestBlocks {
         register("facing_obj_model_block", FACING_OBJ_MODEL_BLOCK);
 
         ItemGroupEvents.MODIFY_ENTRIES_ALL.register((group, entries) -> {
-            if (group == CreativeModeTabs.BUILDING_BLOCKS) {
+            if (group == BuiltInRegistries.CREATIVE_MODE_TAB.get(CreativeModeTabs.BUILDING_BLOCKS)) {
                 entries.accept(NORMAL_MODEL_BLOCK);
                 entries.accept(OBJ_MODEL_BLOCK);
                 entries.accept(FACING_MODEL_BLOCK);
