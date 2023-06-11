@@ -26,13 +26,11 @@ public class SMLTestBlocks {
         register("facing_model_block", FACING_MODEL_BLOCK);
         register("facing_obj_model_block", FACING_OBJ_MODEL_BLOCK);
 
-        ItemGroupEvents.MODIFY_ENTRIES_ALL.register((group, entries) -> {
-            if (group == BuiltInRegistries.CREATIVE_MODE_TAB.get(CreativeModeTabs.BUILDING_BLOCKS)) {
-                entries.accept(NORMAL_MODEL_BLOCK);
-                entries.accept(OBJ_MODEL_BLOCK);
-                entries.accept(FACING_MODEL_BLOCK);
-                entries.accept(FACING_OBJ_MODEL_BLOCK);
-            }
+        ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.BUILDING_BLOCKS).register(ct -> {
+            ct.accept(NORMAL_MODEL_BLOCK);
+            ct.accept(OBJ_MODEL_BLOCK);
+            ct.accept(FACING_MODEL_BLOCK);
+            ct.accept(FACING_OBJ_MODEL_BLOCK);
         });
     }
 

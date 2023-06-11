@@ -12,6 +12,8 @@ Please write according to [Keep a Changelog](https://keepachangelog.com/en/1.0.0
 
 ### Changed
 
+- Port MC1.20 [#2](https://github.com/TeamFelnull/SpecialModelLoader/pull/2)
+
 ### Deprecated
 
 ### Removed

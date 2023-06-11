@@ -23,14 +23,12 @@ public class SMLTestItems {
         register("forge_obj_model_item", FORGE_OBJ_MODEL_ITEM);
         register("dynamic_obj_model_item", DYNAMIC_OBJ_MODEL_ITEM);
 
-        ItemGroupEvents.MODIFY_ENTRIES_ALL.register((group, entries) -> {
-            if (group == BuiltInRegistries.CREATIVE_MODE_TAB.get(CreativeModeTabs.BUILDING_BLOCKS)) {
-                entries.accept(NORMAL_MODEL_ITEM);
-                entries.accept(OBJ_MODEL_ITEM);
-                entries.accept(OBJ2_MODEL_ITEM);
-                entries.accept(FORGE_OBJ_MODEL_ITEM);
-                entries.accept(DYNAMIC_OBJ_MODEL_ITEM);
-            }
+        ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.BUILDING_BLOCKS).register(ct -> {
+            ct.accept(NORMAL_MODEL_ITEM);
+            ct.accept(OBJ_MODEL_ITEM);
+            ct.accept(OBJ2_MODEL_ITEM);
+            ct.accept(FORGE_OBJ_MODEL_ITEM);
+            ct.accept(DYNAMIC_OBJ_MODEL_ITEM);
         });
     }
 

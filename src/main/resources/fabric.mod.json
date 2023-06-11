@@ -8,9 +8,14 @@
     "FelNull developers",
     "MORIMORI0317"
   ],
+  "contributors": [
+    "StarBoyCeleste",
+    "MerlinDaWizard"
+  ],
   "contact": {
     "email": "teamfelnull@felnull.dev",
-    "sources": "https://github.com/TeamFelnull/SpecialModelLoader"
+    "sources": "https://github.com/TeamFelnull/SpecialModelLoader",
+    "issues": "https://github.com/TeamFelnull/SpecialModelLoader/issues"
   },
   "license": "MIT License",
   "icon": "assets/special-model-loader/icon.png",
