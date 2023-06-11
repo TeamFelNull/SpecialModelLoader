@@ -1,0 +1,10 @@
+{
+  "homepage": "https://github.com/TeamFelnull/SpecialModelLoader/releases",
+  "1.20": {
+    "1.2.0": "Added\n- Added ability to add model load scopes using resource packs\nChanged\n- Port MC1.20 [#2](https://github.com/TeamFelnull/SpecialModelLoader/pull/2)\n"
+  },
+  "promos": {
+    "1.20-latest": "1.2.0",
+    "1.20-recommended": "1.2.0"
+  }
+}
