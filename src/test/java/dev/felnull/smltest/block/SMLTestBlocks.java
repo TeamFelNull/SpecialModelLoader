@@ -1,7 +1,6 @@
 package dev.felnull.smltest.block;
 
 import dev.felnull.smltest.SMLTest;
-import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.core.Registry;
@@ -9,6 +8,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.MapColor;
@@ -35,7 +35,7 @@ public class SMLTestBlocks {
     }
 
     public static void register(String name, Block block) {
-        Registry.register(BuiltInRegistries.BLOCK, new ResourceLocation(SMLTest.MODID, name), block);
-        Registry.register(BuiltInRegistries.ITEM, new ResourceLocation(SMLTest.MODID, name), new BlockItem(block, new FabricItemSettings()));
+        Registry.register(BuiltInRegistries.BLOCK, ResourceLocation.fromNamespaceAndPath(SMLTest.MODID, name), block);
+        Registry.register(BuiltInRegistries.ITEM, ResourceLocation.fromNamespaceAndPath(SMLTest.MODID, name), new BlockItem(block, new Item.Properties()));
     }
 }

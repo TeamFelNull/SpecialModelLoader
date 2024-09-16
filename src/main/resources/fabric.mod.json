@@ -5,8 +5,8 @@
   "name": "Special Model Loader",
   "description": "Support for loading special models.\nThe ikisugi model loader mod...",
   "authors": [
-    "FelNull developers",
-    "MORIMORI0317"
+    "MORIMORI0317",
+    "FelNull Developers"
   ],
   "contributors": [
     "StarBoyCeleste",
@@ -25,15 +25,18 @@
       "dev.felnull.specialmodelloader.impl.SpecialModelLoader"
     ]
   },
-  "depends": {
-    "fabricloader": ">=0.14.21",
-    "fabric-api": "*",
-    "minecraft": ">=1.20",
-    "java": ">=17"
-  },
   "mixins": [
-    "special-model-loader.mixins.json"
+    {
+      "config": "special-model-loader.mixins.json",
+      "environment": "client"
+    }
   ],
+  "depends": {
+    "fabricloader": ">=0.16.2",
+    "minecraft": ">=1.21.1",
+    "java": ">=21",
+    "fabric-api": "*"
+  },
   "custom": {
     "modmenu": {
       "badges": [

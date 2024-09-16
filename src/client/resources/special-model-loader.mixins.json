@@ -1,0 +1,11 @@
+{
+  "required": true,
+  "package": "dev.felnull.specialmodelloader.impl.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "client": [
+    "BlockModelAccessor"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+	}
+}

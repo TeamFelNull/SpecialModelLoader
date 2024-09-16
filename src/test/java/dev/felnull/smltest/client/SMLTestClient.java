@@ -7,8 +7,7 @@ import dev.felnull.smltest.SMLTest;
 import dev.felnull.smltest.item.SMLTestItems;
 import dev.felnull.specialmodelloader.api.event.SpecialModelLoaderEvents;
 import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.api.client.model.BakedModelManagerHelper;
-import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
+import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
 import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Sheets;
@@ -21,12 +20,12 @@ import java.util.function.Consumer;
 
 public class SMLTestClient implements ClientModInitializer {
     private static final Minecraft mc = Minecraft.getInstance();
-    public static final ResourceLocation TEST_OBJ_MODEL = new ResourceLocation(SMLTest.MODID, "item/obj_model_item_dynamic");
+    public static final ResourceLocation TEST_OBJ_MODEL = ResourceLocation.fromNamespaceAndPath(SMLTest.MODID, "item/obj_model_item_dynamic");
 
     @Override
     public void onInitializeClient() {
-        SpecialModelLoaderEvents.LOAD_SCOPE.register(location -> SMLTest.MODID.equals(location.getNamespace()));
-        ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, out) -> out.accept(TEST_OBJ_MODEL));
+        SpecialModelLoaderEvents.LOAD_SCOPE.register(() -> (resManager, location) -> SMLTest.MODID.equals(location.getNamespace()));
+        ModelLoadingPlugin.register(pluginContext -> pluginContext.addModels(TEST_OBJ_MODEL));
         BuiltinItemRendererRegistry.INSTANCE.register(SMLTestItems.DYNAMIC_OBJ_MODEL_ITEM, (stack, mode, poseStack, vertexConsumers, light, overlay) -> {
             poseStack.pushPose();
 
@@ -36,7 +35,7 @@ public class SMLTestClient implements ClientModInitializer {
                 poseRotateZ(poseStack, 360f * (float) (System.currentTimeMillis() % 30000) / 30000f);
             });
 
-            var model = BakedModelManagerHelper.getModel(mc.getModelManager(), TEST_OBJ_MODEL);
+            var model = mc.getModelManager().getModel(TEST_OBJ_MODEL);
             var vc = vertexConsumers.getBuffer(Sheets.solidBlockSheet());
             renderModel(poseStack, vc, model, light, overlay);
 

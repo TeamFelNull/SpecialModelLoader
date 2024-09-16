@@ -1,7 +1,6 @@
 package dev.felnull.smltest.item;
 
 import dev.felnull.smltest.SMLTest;
-import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -10,11 +9,11 @@ import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 
 public class SMLTestItems {
-    public static final Item NORMAL_MODEL_ITEM = new Item(new FabricItemSettings());
-    public static final Item OBJ_MODEL_ITEM = new Item(new FabricItemSettings());
-    public static final Item OBJ2_MODEL_ITEM = new Item(new FabricItemSettings());
-    public static final Item FORGE_OBJ_MODEL_ITEM = new Item(new FabricItemSettings());
-    public static final Item DYNAMIC_OBJ_MODEL_ITEM = new Item(new FabricItemSettings());
+    public static final Item NORMAL_MODEL_ITEM = new Item(new Item.Properties());
+    public static final Item OBJ_MODEL_ITEM = new Item(new Item.Properties());
+    public static final Item OBJ2_MODEL_ITEM = new Item(new Item.Properties());
+    public static final Item FORGE_OBJ_MODEL_ITEM = new Item(new Item.Properties());
+    public static final Item DYNAMIC_OBJ_MODEL_ITEM = new Item(new Item.Properties());
 
     public static void init() {
         register("normal_model_item", NORMAL_MODEL_ITEM);
@@ -33,6 +32,6 @@ public class SMLTestItems {
     }
 
     public static void register(String name, Item item) {
-        Registry.register(BuiltInRegistries.ITEM, new ResourceLocation(SMLTest.MODID, name), item);
+        Registry.register(BuiltInRegistries.ITEM, ResourceLocation.fromNamespaceAndPath(SMLTest.MODID, name), item);
     }
 }

@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '1.2-SNAPSHOT'
+    id 'fabric-loom' version '1.7-SNAPSHOT'
     id "com.github.johnrengelman.shadow" version "8.1.1"
     id 'maven-publish'
     id 'com.matthewprenger.cursegradle' version '1.4.0'
@@ -7,29 +7,29 @@ plugins {
     id 'org.jetbrains.changelog' version "2.0.0"
 }
 
+// Version Check
 if (System.getenv("GITHUB_REF") != null && System.getenv("GITHUB_REF").startsWith("refs/tags/v")) {
     if (System.getenv("GITHUB_REF").substring("refs/tags/v".length()) != project.mod_version)
         throw new IllegalStateException("The version and tag specification are different")
 }
 
-sourceCompatibility = JavaVersion.VERSION_17
-targetCompatibility = JavaVersion.VERSION_17
-
-archivesBaseName = project.archives_base_name
 version = project.mod_version
 group = project.maven_group
 
-sourceSets {
-    test {
-        resources {
-            srcDirs += [
-                    'src/test/generated'
-            ]
-        }
-    }
+base {
+    archivesName = project.archives_base_name
 }
 
 loom {
+    splitEnvironmentSourceSets()
+
+    mods {
+        "special-model-loader" {
+            sourceSet sourceSets.main
+            sourceSet sourceSets.client
+        }
+    }
+
     runs {
         testmodClient {
             client()
@@ -52,7 +52,21 @@ loom {
         }
     }
 }
-//test.dependsOn runTestmodDatagen
+
+sourceSets {
+    test {
+        compileClasspath += main.compileClasspath
+        runtimeClasspath += main.runtimeClasspath
+        compileClasspath += client.compileClasspath
+        runtimeClasspath += client.runtimeClasspath
+
+        resources {
+            srcDirs += [
+                    'src/test/generated'
+            ]
+        }
+    }
+}
 
 changelog {
     repositoryUrl = rootProject.repository_url
@@ -64,14 +78,13 @@ changelog {
     combinePreReleases = false
 }
 
-
-repositories {
-
-}
-
 configurations {
     shadowIn
     modImplementation.extendsFrom shadowIn
+}
+
+repositories {
+    maven { url "https://maven.terraformersmc.com/releases/" }
 }
 
 dependencies {
@@ -80,8 +93,11 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+    modRuntimeOnly "com.terraformersmc:modmenu:11.0.2"
 
     shadowIn 'de.javagl:obj:0.3.0'
+
+    testImplementation sourceSets.client.output
 }
 
 shadowJar {
@@ -107,19 +123,19 @@ processResources {
 }
 
 tasks.withType(JavaCompile).configureEach {
-    it.options.release = 17
+    it.options.release = 21
 }
 
 java {
     withSourcesJar()
 
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
 }
 
 jar {
     from("LICENSE") {
-        rename { "${it}_${project.archivesBaseName}" }
+        rename { "${it}_${project.base.archivesName.get()}" }
     }
 }
 

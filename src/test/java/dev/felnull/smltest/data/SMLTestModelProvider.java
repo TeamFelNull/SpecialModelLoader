@@ -43,7 +43,7 @@ public class SMLTestModelProvider extends FabricModelProvider {
     @Override
     public void generateItemModels(ItemModelGenerators itemModelGenerator) {
         itemModelGenerator.generateFlatItem(SMLTestItems.NORMAL_MODEL_ITEM, ModelTemplates.FLAT_ITEM);
-        SpecialModelDataGenHelper.generateObjModel(SMLTestItems.OBJ_MODEL_ITEM, new ResourceLocation(SMLTest.MODID, "models/item/sea_cheken_pack/sea_chicken.obj"), true, false, null, itemModelGenerator.output);
+        SpecialModelDataGenHelper.generateObjModel(SMLTestItems.OBJ_MODEL_ITEM, ResourceLocation.fromNamespaceAndPath(SMLTest.MODID, "models/item/sea_cheken_pack/sea_chicken.obj"), true, false, null, itemModelGenerator.output);
 
     }
 }
