@@ -21,3 +21,4 @@ jobs:
     uses: TeamFelnull/actions-reusable-workflows/.github/workflows/mcmod-post-release.yml@master
     with:
       update_forge_version_check: false
+      update_neoforge_version_check: false
