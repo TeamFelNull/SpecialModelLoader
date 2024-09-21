@@ -8,7 +8,6 @@ Changelog to track updates for this mod.
 ### Added
 
 ### Changed
-- Port MC1.21.1
 
 ### Deprecated
 
@@ -17,6 +16,11 @@ Changelog to track updates for this mod.
 ### Fixed
 
 ### Security
+
+## [1.3.0] - 2024-09-21
+
+### Changed
+- Port MC1.21.1
 
 ## [1.2.0] - 2023-06-11
 
@@ -42,7 +46,8 @@ Changelog to track updates for this mod.
 ### Fixed
 - Fixed error when adding to Fabric Loom 1.1 project
 
-[Unreleased]: https://github.com/TeamFelnull/SpecialModelLoader/compare/v1.2.0...HEAD
+[Unreleased]: https://github.com/TeamFelnull/SpecialModelLoader/compare/v1.3.0...HEAD
+[1.3.0]: https://github.com/TeamFelnull/SpecialModelLoader/compare/v1.2.0...v1.3.0
 [1.2.0]: https://github.com/TeamFelnull/SpecialModelLoader/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/TeamFelnull/SpecialModelLoader/compare/v1.0.1...v1.1.0
 [1.0.1]: https://github.com/TeamFelnull/SpecialModelLoader/commits/v1.0.1
