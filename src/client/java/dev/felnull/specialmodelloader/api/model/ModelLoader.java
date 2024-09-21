@@ -2,7 +2,6 @@ package dev.felnull.specialmodelloader.api.model;
 
 import com.google.gson.JsonObject;
 import dev.felnull.specialmodelloader.impl.SpecialModelLoader;
-import dev.felnull.specialmodelloader.impl.SpecialModelLoaderClient;
 import net.minecraft.client.resources.model.UnbakedModel;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;

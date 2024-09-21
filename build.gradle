@@ -1,8 +1,10 @@
+import net.darkhax.curseforgegradle.TaskPublishCurseForge
+
 plugins {
     id 'fabric-loom' version '1.7-SNAPSHOT'
     id 'maven-publish'
-    id 'com.matthewprenger.cursegradle' version '1.4.0'
-    id "com.modrinth.minotaur" version "2.8.0"
+    id 'net.darkhax.curseforgegradle' version '1.1.25'
+    id "com.modrinth.minotaur" version '2.8.7'
     id 'org.jetbrains.changelog' version "2.0.0"
 }
 
@@ -166,56 +168,53 @@ publishing {
     }
 }
 
-curseforge {
+def mainJar = file("${project.layout.buildDirectory.get().asFile}/libs/${project.archives_base_name}-mc${project.minecraft_version}-${project.mod_version}.jar")
+def sourcesJar = file("${project.layout.buildDirectory.get().asFile}/libs/${project.archives_base_name}-mc${project.minecraft_version}-${project.mod_version}-sources.jar")
+def changeLogFile = file('../LATEST_CHANGELOG.md')
+def uploadMainName = "${project.mod_display_name}-${project.minecraft_version}-${project.mod_version}"
+def uploadSourcesName = "${project.mod_display_name}-${project.minecraft_version}-${project.mod_version}-sources"
+
+tasks.register('publishCurseForge', TaskPublishCurseForge) {
     if (System.getenv('curesforgeapikey') != null && "${project.curesforge_id}" != '') {
-        apiKey = System.getenv('curesforgeapikey')
-        project {
-            id = "${rootProject.curesforge_id}"
+        apiToken = System.getenv('curesforgeapikey')
 
-            changelogType = 'markdown'
-            changelog = file('./LATEST_CHANGELOG.md')
+        def mainFile = upload(findProperty('curesforge_id'), mainJar)
+        mainFile.changelogType = 'markdown'
+        mainFile.changelog = changeLogFile.text
+        mainFile.releaseType = "${project.release_type}"
+        mainFile.displayName = uploadMainName
 
-            releaseType = "${rootProject.release_type}"
-            addGameVersion "${rootProject.minecraft_version}"
-            addGameVersion 'Java 17'
-            addGameVersion "Fabric"
-            addGameVersion "Quilt"
-
-            relations {
-                requiredDependency "fabric-api"
-            }
-
-            mainArtifact(file("${project.buildDir}/libs/${project.archives_base_name}-mc${project.minecraft_version}-${project.mod_version}.jar")) {
-                displayName = "${project.mod_display_name}-${project.minecraft_version}-${project.mod_version}"
-            }
-
-            addArtifact(file("${project.buildDir}/libs/${project.archives_base_name}-mc${project.minecraft_version}-${project.mod_version}-sources.jar")) {
-                displayName = "${project.mod_display_name}-${project.minecraft_version}-${project.mod_version}-sources"
-            }
-            afterEvaluate {
-                uploadTask.dependsOn("build")
-            }
+        project.support_versions.split(",").each {
+            String version -> mainFile.addGameVersion(version)
         }
-    }
-    options {
-        forgeGradleIntegration = false
+
+        mainFile.addJavaVersion('Java 21')
+
+        mainFile.addModLoader('Fabric')
+        mainFile.addModLoader('Quilt')
+
+        mainFile.addGameVersion('Client')
+
+        mainFile.addRequirement("fabric-api")
+
+        def sourcesFile = mainFile.withAdditionalFile(sourcesJar)
+        sourcesFile.displayName = uploadSourcesName
     }
 }
-
 
 if (System.getenv('modrinthapikey') != null && "${modrinth_id}" != '') {
     modrinth {
         token = System.getenv('modrinthapikey')
         projectId = "${project.modrinth_id}"
-        versionName = "${project.mod_display_name}-${project.minecraft_version}-${project.mod_version}"
+        versionName = uploadMainName
         versionNumber = "${project.minecraft_version}-${project.mod_version}"
         versionType = "${project.release_type}"
-        uploadFile = file("${project.buildDir}/libs/${project.archives_base_name}-mc${project.minecraft_version}-${project.mod_version}.jar")
-        gameVersions = List.of(project.minecraft_version)
+        uploadFile = mainJar
+        gameVersions = List.of(project.support_versions.split(","))
         loaders = ["fabric", "quilt"]
         dependencies {
-            required.project("P7dR8mSH")//Fabric API
+            required.project("P7dR8mSH") //Fabric API
         }
-        changelog = file('./LATEST_CHANGELOG.md').text
+        changelog = changeLogFile.text
     }
 }
