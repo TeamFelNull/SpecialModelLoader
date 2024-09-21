@@ -170,7 +170,7 @@ publishing {
 
 def mainJar = file("${project.layout.buildDirectory.get().asFile}/libs/${project.archives_base_name}-mc${project.minecraft_version}-${project.mod_version}.jar")
 def sourcesJar = file("${project.layout.buildDirectory.get().asFile}/libs/${project.archives_base_name}-mc${project.minecraft_version}-${project.mod_version}-sources.jar")
-def changeLogFile = file('../LATEST_CHANGELOG.md')
+def changeLogFile = file('./LATEST_CHANGELOG.md')
 def uploadMainName = "${project.mod_display_name}-${project.minecraft_version}-${project.mod_version}"
 def uploadSourcesName = "${project.mod_display_name}-${project.minecraft_version}-${project.mod_version}-sources"
 
