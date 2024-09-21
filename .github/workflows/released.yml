@@ -9,7 +9,7 @@ jobs:
   release:
     uses: TeamFelnull/actions-reusable-workflows/.github/workflows/mcmod-release.yml@master
     with:
-      build_tasks: "build curseforge modrinth publish"
+      build_tasks: "build publishCurseForge modrinth publish"
     secrets:
       curseforge_token: ${{ secrets.CURSEFORGE_TOKEN_MORI }}
       modrinth_token: ${{ secrets.MODRINTH_TOKEN_MORI }}
