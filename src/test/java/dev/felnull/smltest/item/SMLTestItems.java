@@ -14,6 +14,8 @@ public class SMLTestItems {
     public static final Item OBJ2_MODEL_ITEM = new Item(new Item.Properties());
     public static final Item FORGE_OBJ_MODEL_ITEM = new Item(new Item.Properties());
     public static final Item DYNAMIC_OBJ_MODEL_ITEM = new Item(new Item.Properties());
+    public static final Item MTLOVERRIDE_OBJ_MODEL_ITEM = new Item(new Item.Properties());
+    public static final Item TEXTURES_OBJ_MODEL_ITEM = new Item(new Item.Properties());
 
     public static void init() {
         register("normal_model_item", NORMAL_MODEL_ITEM);
@@ -21,6 +23,8 @@ public class SMLTestItems {
         register("obj2_model_item", OBJ2_MODEL_ITEM);
         register("forge_obj_model_item", FORGE_OBJ_MODEL_ITEM);
         register("dynamic_obj_model_item", DYNAMIC_OBJ_MODEL_ITEM);
+        register("mtloverride_obj_model_item", MTLOVERRIDE_OBJ_MODEL_ITEM);
+        register("textures_obj_model_item", TEXTURES_OBJ_MODEL_ITEM);
 
         ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.BUILDING_BLOCKS).register(ct -> {
             ct.accept(NORMAL_MODEL_ITEM);
@@ -28,6 +32,8 @@ public class SMLTestItems {
             ct.accept(OBJ2_MODEL_ITEM);
             ct.accept(FORGE_OBJ_MODEL_ITEM);
             ct.accept(DYNAMIC_OBJ_MODEL_ITEM);
+            ct.accept(MTLOVERRIDE_OBJ_MODEL_ITEM);
+            ct.accept(TEXTURES_OBJ_MODEL_ITEM);
         });
     }
 

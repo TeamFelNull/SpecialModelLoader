@@ -1,6 +1,5 @@
 plugins {
     id 'fabric-loom' version '1.7-SNAPSHOT'
-    id "com.github.johnrengelman.shadow" version "8.1.1"
     id 'maven-publish'
     id 'com.matthewprenger.cursegradle' version '1.4.0'
     id "com.modrinth.minotaur" version "2.8.0"
@@ -78,38 +77,34 @@ changelog {
     combinePreReleases = false
 }
 
-configurations {
-    shadowIn
-    modImplementation.extendsFrom shadowIn
-}
-
 repositories {
     maven { url "https://maven.terraformersmc.com/releases/" }
+    maven { url "https://maven.parchmentmc.org" }
+}
+
+configurations {
+    modImplementation.extendsFrom includeIn
+    include.extendsFrom includeIn
 }
 
 dependencies {
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    mappings loom.officialMojangMappings()
+
+    mappings loom.layered() {
+        officialMojangMappings()
+        parchment("org.parchmentmc.data:parchment-1.21:2024.06.23@zip")
+    }
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
     modRuntimeOnly "com.terraformersmc:modmenu:11.0.2"
 
-    shadowIn 'de.javagl:obj:0.3.0'
+    includeIn "de.javagl:obj:0.4.0"
 
     testImplementation sourceSets.client.output
 }
 
-shadowJar {
-    configurations = [project.configurations.shadowIn]
-    archiveClassifier.set("dev-shadow")
-
-    relocate 'de.javagl', 'dev.felnull.specialmodelloader.impl.include.de.javagl'
-}
-
 remapJar {
-    inputFile.set(shadowJar.archiveFile)
-    dependsOn shadowJar
     archiveClassifier.set(null)
     setArchivesBaseName("${rootProject.archives_base_name}-mc${rootProject.minecraft_version}")
 }

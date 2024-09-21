@@ -1,0 +1,7 @@
+{
+  "parent": "special-model-loader:builtin/obj",
+  "ambientocclusion": false,
+  "flip_v": true,
+  "model": "special-model-loader-test:models/item/ring/ring.obj",
+  "mtl_override": "special-model-loader-test:models/item/ring/ring_2.mtl"
+}

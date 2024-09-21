@@ -1,5 +1,5 @@
 {
-  "loader": "forge:obj",
+  "loader": "neoforge:obj",
   "model": "special-model-loader-test:models/item/parabolic_antenna/parabolic_antenna.obj",
   "flip_v": true,
   "display": {

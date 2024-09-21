@@ -1,5 +1,6 @@
 package dev.felnull.smltest.data;
 
+import com.google.common.collect.ImmutableMap;
 import dev.felnull.smltest.SMLTest;
 import dev.felnull.smltest.block.SMLTestBlocks;
 import dev.felnull.smltest.item.SMLTestItems;
@@ -43,7 +44,19 @@ public class SMLTestModelProvider extends FabricModelProvider {
     @Override
     public void generateItemModels(ItemModelGenerators itemModelGenerator) {
         itemModelGenerator.generateFlatItem(SMLTestItems.NORMAL_MODEL_ITEM, ModelTemplates.FLAT_ITEM);
-        SpecialModelDataGenHelper.generateObjModel(SMLTestItems.OBJ_MODEL_ITEM, ResourceLocation.fromNamespaceAndPath(SMLTest.MODID, "models/item/sea_cheken_pack/sea_chicken.obj"), true, false, null, itemModelGenerator.output);
 
+        SpecialModelDataGenHelper.generateObjModel(SMLTestItems.OBJ_MODEL_ITEM, ResourceLocation.fromNamespaceAndPath(SMLTest.MODID, "models/item/sea_cheken_pack/sea_chicken.obj"),
+                true, false, null, ImmutableMap.of(),
+                null, itemModelGenerator.output);
+
+        SpecialModelDataGenHelper.generateObjModel(SMLTestItems.MTLOVERRIDE_OBJ_MODEL_ITEM,
+                ResourceLocation.fromNamespaceAndPath(SMLTest.MODID, "models/item/ring/ring.obj"),
+                true, false, SMLTest.MODID + ":models/item/ring/ring_2.mtl", ImmutableMap.of(),
+                null, itemModelGenerator.output);
+
+        SpecialModelDataGenHelper.generateObjModel(SMLTestItems.TEXTURES_OBJ_MODEL_ITEM,
+                ResourceLocation.fromNamespaceAndPath(SMLTest.MODID, "models/item/ring/ring.obj"),
+                true, false, null, ImmutableMap.of("texture0", ResourceLocation.withDefaultNamespace("block/cobblestone")),
+                null, itemModelGenerator.output);
     }
 }

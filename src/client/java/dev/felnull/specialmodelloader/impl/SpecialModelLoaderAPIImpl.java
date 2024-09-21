@@ -7,9 +7,9 @@ import dev.felnull.specialmodelloader.api.model.LoadedResource;
 import dev.felnull.specialmodelloader.api.model.ModelLoader;
 import dev.felnull.specialmodelloader.api.model.obj.ObjModelLoader;
 import dev.felnull.specialmodelloader.api.model.obj.ObjModelOption;
-import dev.felnull.specialmodelloader.impl.model.ForgeObjModelCompat;
+import dev.felnull.specialmodelloader.impl.model.NeoForgeCompat;
 import dev.felnull.specialmodelloader.impl.model.obj.ObjModelLoaderImp;
-import dev.felnull.specialmodelloader.impl.util.JsonModelUtils;
+import dev.felnull.specialmodelloader.impl.util.JsonUtils;
 import net.minecraft.client.resources.model.UnbakedModel;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -36,19 +36,21 @@ public class SpecialModelLoaderAPIImpl implements SpecialModelLoaderAPI {
         List<JsonObject> models = new ArrayList<>();
         JsonObject jo = readJson(resourceManager, modelLocation);
 
-        Pair<ResourceLocation, ObjModelOption> forgeModel = ForgeObjModelCompat.getObjModelData(jo);
-        if (forgeModel != null) {
-            return getObjLoader().loadResource(resourceManager, forgeModel.getLeft(), forgeModel.getRight());
+        if (NeoForgeCompat.isEnable()) {
+            Pair<ResourceLocation, ObjModelOption> forgeModel = NeoForgeCompat.getObjModelData(jo);
+            if (forgeModel != null) {
+                return getObjLoader().loadResource(resourceManager, forgeModel.getLeft(), forgeModel.getRight());
+            }
         }
 
-        ResourceLocation location = JsonModelUtils.getParentLocation(jo);
+        ResourceLocation location = JsonUtils.getParentLocation(jo);
         Set<ResourceLocation> parents = new HashSet<>();
 
         while (location != null) {
             models.add(jo);
 
             if (parents.contains(location)) {
-                SpecialModelLoader.LOGGER.warn("Model parent specification is looping: '{}', '{}'", modelLocation, location);
+                SpecialModelLoaderClient.LOGGER.warn("Model parent specification is looping: '{}', '{}'", modelLocation, location);
                 return null;
             }
 
@@ -63,7 +65,7 @@ public class SpecialModelLoaderAPIImpl implements SpecialModelLoaderAPI {
             }
 
             jo = readJson(resourceManager, location);
-            location = JsonModelUtils.getParentLocation(jo);
+            location = JsonUtils.getParentLocation(jo);
         }
 
         return null;

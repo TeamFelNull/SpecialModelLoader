@@ -1,12 +1,13 @@
 package dev.felnull.specialmodelloader.impl.model.obj;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonObject;
 import de.javagl.obj.*;
 import dev.felnull.specialmodelloader.api.model.LoadedResource;
 import dev.felnull.specialmodelloader.api.model.obj.ObjModelLoader;
 import dev.felnull.specialmodelloader.api.model.obj.ObjModelOption;
-import dev.felnull.specialmodelloader.impl.SpecialModelLoader;
+import dev.felnull.specialmodelloader.impl.SpecialModelLoaderClient;
 import net.minecraft.client.resources.model.UnbakedModel;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
@@ -37,8 +38,8 @@ public class ObjModelLoaderImp implements ObjModelLoader {
     }
 
     @Override
-    public @Nullable LoadedResource loadResource(@NotNull ResourceManager resourceManager, @NotNull ResourceLocation location, @NotNull ObjModelOption option) {
-        Optional<Resource> res = resourceManager.getResource(location);
+    public @Nullable LoadedResource loadResource(@NotNull ResourceManager resourceManager, @NotNull ResourceLocation modelLocation, @NotNull ObjModelOption option) {
+        Optional<Resource> res = resourceManager.getResource(modelLocation);
 
         if (res.isEmpty()) {
             return null;
@@ -47,11 +48,25 @@ public class ObjModelLoaderImp implements ObjModelLoader {
         try (var reader = res.get().openAsReader()) {
             Obj obj = ObjUtils.convertToRenderable(ObjReader.read(reader));
 
-            String[] paths = location.getPath().split("/");
-            paths = ArrayUtils.remove(paths, paths.length - 1);
-            ResourceLocation loc = ResourceLocation.fromNamespaceAndPath(location.getNamespace(), String.join("/", paths));
+            ResourceLocation mtlDirLoc;
+            List<String> mtlFileNames;
 
-            return new ObjModelLoadedResource(location, obj, ImmutableMap.copyOf(loadMtl(resourceManager, loc, obj.getMtlFileNames())), option);
+            String mtlOverride;
+            if ((mtlOverride = option.getMtlOverride()) != null) {
+                String[] overrideSplit = mtlOverride.split("/");
+
+                mtlDirLoc = ResourceLocation.parse(String.join("/", ArrayUtils.remove(overrideSplit, overrideSplit.length - 1)));
+                mtlFileNames = ImmutableList.of(overrideSplit[overrideSplit.length - 1]);
+            } else {
+                String[] mtlDirPaths = modelLocation.getPath().split("/");
+                mtlDirPaths = ArrayUtils.remove(mtlDirPaths, mtlDirPaths.length - 1);
+
+                mtlDirLoc = ResourceLocation.fromNamespaceAndPath(modelLocation.getNamespace(), String.join("/", mtlDirPaths));
+                mtlFileNames = obj.getMtlFileNames();
+            }
+
+            return new ObjModelLoadedResource(modelLocation, obj,
+                    ImmutableMap.copyOf(loadMtl(resourceManager, mtlDirLoc, mtlFileNames)), option);
         } catch (IOException e) {
             throw new IllegalStateException("Failed to load obj file.", e);
         }
@@ -67,7 +82,9 @@ public class ObjModelLoaderImp implements ObjModelLoader {
     }
 
     private Map<String, Mtl> loadMtl(ResourceManager resourceManager, ResourceLocation location, List<String> mtlNames) {
-        return mtlNames.stream().flatMap(r -> loadMtl(resourceManager, location, r).stream()).collect(Collectors.toMap(Mtl::getName, r -> r));
+        return mtlNames.stream()
+                .flatMap(r -> loadMtl(resourceManager, location, r).stream())
+                .collect(Collectors.toMap(Mtl::getName, r -> r));
     }
 
     private List<Mtl> loadMtl(ResourceManager resourceManager, ResourceLocation location, String mtlName) {
@@ -76,7 +93,7 @@ public class ObjModelLoaderImp implements ObjModelLoader {
             try (var reader = res.openAsReader()) {
                 return MtlReader.read(reader);
             } catch (IOException e) {
-                SpecialModelLoader.LOGGER.error("Failed to read mtl file.", e);
+                SpecialModelLoaderClient.LOGGER.error("Failed to read mtl file.", e);
                 return new ArrayList<Mtl>();
             }
         }).orElseGet(List::of);

@@ -50,6 +50,5 @@ public final class SpecialModelLoaderEvents {
          * @return A CompletableFuture that takes a predicate to check if the location is a load scope.
          */
         CompletableFuture<Predicate<ResourceLocation>> provideAsyncLoadScopePredicate(ResourceManager resourceManager, Executor executor);
-
     }
 }

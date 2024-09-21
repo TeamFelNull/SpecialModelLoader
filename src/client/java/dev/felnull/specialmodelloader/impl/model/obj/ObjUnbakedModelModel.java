@@ -5,7 +5,7 @@ import de.javagl.obj.Obj;
 import de.javagl.obj.ObjFace;
 import de.javagl.obj.ObjSplitting;
 import dev.felnull.specialmodelloader.api.model.obj.ObjModelOption;
-import dev.felnull.specialmodelloader.impl.SpecialModelLoader;
+import dev.felnull.specialmodelloader.impl.SpecialModelLoaderClient;
 import dev.felnull.specialmodelloader.impl.model.SimpleMeshModel;
 import dev.felnull.specialmodelloader.impl.model.SpecialBaseUnbakedModel;
 import net.fabricmc.fabric.api.renderer.v1.Renderer;
@@ -55,7 +55,7 @@ public class ObjUnbakedModelModel extends SpecialBaseUnbakedModel {
         Renderer renderer = RendererAccess.INSTANCE.getRenderer();
 
         if (renderer == null) {
-            SpecialModelLoader.LOGGER.warn("IndigoRenderer is used since the Renderer cannot be obtained. ({})", location);
+            SpecialModelLoaderClient.LOGGER.warn("IndigoRenderer is used since the Renderer cannot be obtained. ({})", location);
             renderer = IndigoRenderer.INSTANCE;
         }
 
@@ -91,8 +91,18 @@ public class ObjUnbakedModelModel extends SpecialBaseUnbakedModel {
         if (modelState.isUvLocked())
             flg |= MutableQuadView.BAKE_LOCK_UV;
 
-        if (smtl != null && smtl.getMapKd() != null) {
-            emitter.spriteBake(textureGetter.apply(new Material(InventoryMenu.BLOCK_ATLAS, ResourceLocation.parse(smtl.getMapKd()))), flg);
+        ResourceLocation texLoc = null;
+        String tex;
+        if (smtl != null && (tex = smtl.getMapKd()) != null) {
+            if (tex.startsWith("#")) {
+                texLoc = option.getTextures().get(tex.substring(1));
+            } else {
+                texLoc = ResourceLocation.parse(tex);
+            }
+        }
+
+        if (texLoc != null) {
+            emitter.spriteBake(textureGetter.apply(new Material(InventoryMenu.BLOCK_ATLAS, texLoc)), flg);
         } else {
             emitter.spriteBake(textureGetter.apply(MISSING), flg);
         }

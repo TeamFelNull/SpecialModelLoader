@@ -1,0 +1,9 @@
+{
+  "parent": "special-model-loader:builtin/obj",
+  "ambientocclusion": false,
+  "flip_v": true,
+  "model": "special-model-loader-test:models/item/ring/ring.obj",
+  "textures": {
+    "texture0": "minecraft:block/cobblestone"
+  }
+}
