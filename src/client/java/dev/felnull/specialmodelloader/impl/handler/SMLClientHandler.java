@@ -6,7 +6,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import dev.felnull.specialmodelloader.api.event.SpecialModelLoaderEvents;
-import dev.felnull.specialmodelloader.impl.SpecialModelLoaderClient;
+import dev.felnull.specialmodelloader.impl.SpecialModelLoader;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 
@@ -41,14 +41,14 @@ public class SMLClientHandler {
                     JsonObject jo = GSON.fromJson(reader, JsonObject.class);
                     loadManualLoadScope(patternsBuilder, jo);
                 } catch (Exception e) {
-                    SpecialModelLoaderClient.LOGGER.error("Error occurred while loading model load scope resource json {}", location, e);
+                    SpecialModelLoader.LOGGER.error("Error occurred while loading model load scope resource json {}", location, e);
                 }
             });
 
             final ImmutableSet<Pattern> patterns = patternsBuilder.build();
             int size = patterns.size();
             if (size >= 1) {
-                SpecialModelLoaderClient.LOGGER.info("Loaded {} manual model load scope", size);
+                SpecialModelLoader.LOGGER.info("Loaded {} manual model load scope", size);
             }
 
             return loc -> patterns.stream()

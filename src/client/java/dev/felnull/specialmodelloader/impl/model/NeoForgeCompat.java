@@ -2,7 +2,7 @@ package dev.felnull.specialmodelloader.impl.model;
 
 import com.google.gson.JsonObject;
 import dev.felnull.specialmodelloader.api.model.obj.ObjModelOption;
-import dev.felnull.specialmodelloader.impl.SpecialModelLoaderClient;
+import dev.felnull.specialmodelloader.impl.SpecialModelLoader;
 import dev.felnull.specialmodelloader.impl.util.JsonUtils;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.resources.ResourceLocation;
@@ -16,8 +16,8 @@ public final class NeoForgeCompat {
 
     public static void init() {
         if (FabricLoader.getInstance().isModLoaded("connector")) {
-            SpecialModelLoaderClient.LOGGER.info("Sinytra Connector detected.");
-            SpecialModelLoaderClient.LOGGER.info("Disable NeoForge compatibility for OBJ loader.");
+            SpecialModelLoader.LOGGER.info("Sinytra Connector detected.");
+            SpecialModelLoader.LOGGER.info("Disable NeoForge compatibility for OBJ loader.");
         }
     }
 

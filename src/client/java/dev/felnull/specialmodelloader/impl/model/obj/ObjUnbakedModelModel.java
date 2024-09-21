@@ -5,7 +5,7 @@ import de.javagl.obj.Obj;
 import de.javagl.obj.ObjFace;
 import de.javagl.obj.ObjSplitting;
 import dev.felnull.specialmodelloader.api.model.obj.ObjModelOption;
-import dev.felnull.specialmodelloader.impl.SpecialModelLoaderClient;
+import dev.felnull.specialmodelloader.impl.SpecialModelLoader;
 import dev.felnull.specialmodelloader.impl.model.SimpleMeshModel;
 import dev.felnull.specialmodelloader.impl.model.SpecialBaseUnbakedModel;
 import net.fabricmc.fabric.api.renderer.v1.Renderer;
@@ -55,7 +55,7 @@ public class ObjUnbakedModelModel extends SpecialBaseUnbakedModel {
         Renderer renderer = RendererAccess.INSTANCE.getRenderer();
 
         if (renderer == null) {
-            SpecialModelLoaderClient.LOGGER.warn("IndigoRenderer is used since the Renderer cannot be obtained. ({})", location);
+            SpecialModelLoader.LOGGER.warn("IndigoRenderer is used since the Renderer cannot be obtained. ({})", location);
             renderer = IndigoRenderer.INSTANCE;
         }
 

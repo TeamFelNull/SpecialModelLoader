@@ -7,7 +7,7 @@ import de.javagl.obj.*;
 import dev.felnull.specialmodelloader.api.model.LoadedResource;
 import dev.felnull.specialmodelloader.api.model.obj.ObjModelLoader;
 import dev.felnull.specialmodelloader.api.model.obj.ObjModelOption;
-import dev.felnull.specialmodelloader.impl.SpecialModelLoaderClient;
+import dev.felnull.specialmodelloader.impl.SpecialModelLoader;
 import net.minecraft.client.resources.model.UnbakedModel;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
@@ -93,7 +93,7 @@ public class ObjModelLoaderImp implements ObjModelLoader {
             try (var reader = res.openAsReader()) {
                 return MtlReader.read(reader);
             } catch (IOException e) {
-                SpecialModelLoaderClient.LOGGER.error("Failed to read mtl file.", e);
+                SpecialModelLoader.LOGGER.error("Failed to read mtl file.", e);
                 return new ArrayList<Mtl>();
             }
         }).orElseGet(List::of);

@@ -50,7 +50,7 @@ public class SpecialModelLoaderAPIImpl implements SpecialModelLoaderAPI {
             models.add(jo);
 
             if (parents.contains(location)) {
-                SpecialModelLoaderClient.LOGGER.warn("Model parent specification is looping: '{}', '{}'", modelLocation, location);
+                SpecialModelLoader.LOGGER.warn("Model parent specification is looping: '{}', '{}'", modelLocation, location);
                 return null;
             }
 
