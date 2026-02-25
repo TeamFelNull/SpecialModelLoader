@@ -1,7 +1,7 @@
 import net.darkhax.curseforgegradle.TaskPublishCurseForge
 
 plugins {
-    id 'fabric-loom' version '1.9-SNAPSHOT'
+    id 'fabric-loom' version "${loom_version}"
     id 'maven-publish'
     id 'net.darkhax.curseforgegradle' version '1.1.25'
     id "com.modrinth.minotaur" version '2.8.7'
@@ -29,6 +29,7 @@ fabricApi {
 
 loom {
     splitEnvironmentSourceSets()
+    accessWidenerPath = file("src/main/resources/special-model-loader.accesswidener")
 
     mods {
         "special-model-loader" {
@@ -99,7 +100,7 @@ dependencies {
 
     mappings loom.layered() {
         officialMojangMappings()
-        parchment("org.parchmentmc.data:parchment-1.21.4:2025.01.05@zip")
+        parchment("org.parchmentmc.data:parchment-${project.parchment_version}@zip")
     }
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
@@ -112,7 +113,7 @@ dependencies {
 
 remapJar {
     archiveClassifier.set(null)
-    setArchivesBaseName("${rootProject.archives_base_name}-mc${rootProject.minecraft_version}")
+    archiveBaseName.set("${rootProject.archives_base_name}-mc${rootProject.minecraft_version}")
 }
 
 processResources {
@@ -125,6 +126,11 @@ processResources {
 
 tasks.withType(JavaCompile).configureEach {
     it.options.release = 21
+}
+
+test {
+    // Test source set is a test mod, not unit tests
+    enabled = false
 }
 
 java {

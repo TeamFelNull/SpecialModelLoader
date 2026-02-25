@@ -9,7 +9,7 @@ import dev.felnull.specialmodelloader.api.model.obj.ObjModelLoader;
 import dev.felnull.specialmodelloader.api.model.obj.ObjModelOption;
 import dev.felnull.specialmodelloader.impl.SpecialModelLoader;
 import net.minecraft.client.resources.model.UnbakedModel;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import org.apache.commons.lang3.ArrayUtils;
@@ -27,18 +27,21 @@ public class ObjModelLoaderImp implements ObjModelLoader {
     public static final ObjModelLoaderImp INSTANCE = new ObjModelLoaderImp();
 
     @Override
-    public @Nullable LoadedResource loadResource(@NotNull ResourceManager resourceManager, @NotNull JsonObject modelJson) {
-        if (!modelJson.has("model") || !modelJson.get("model").isJsonPrimitive() || !modelJson.getAsJsonPrimitive("model").isString()) {
+    public @Nullable LoadedResource loadResource(@NotNull ResourceManager resourceManager,
+            @NotNull JsonObject modelJson) {
+        if (!modelJson.has("model") || !modelJson.get("model").isJsonPrimitive()
+                || !modelJson.getAsJsonPrimitive("model").isString()) {
             return null;
         }
 
-        ResourceLocation modelLocation = ResourceLocation.parse(modelJson.get("model").getAsString());
+        Identifier modelLocation = Identifier.parse(modelJson.get("model").getAsString());
 
         return loadResource(resourceManager, modelLocation, ObjModelOption.parse(modelJson));
     }
 
     @Override
-    public @Nullable LoadedResource loadResource(@NotNull ResourceManager resourceManager, @NotNull ResourceLocation modelLocation, @NotNull ObjModelOption option) {
+    public @Nullable LoadedResource loadResource(@NotNull ResourceManager resourceManager,
+            @NotNull Identifier modelLocation, @NotNull ObjModelOption option) {
         Optional<Resource> res = resourceManager.getResource(modelLocation);
 
         if (res.isEmpty()) {
@@ -48,20 +51,22 @@ public class ObjModelLoaderImp implements ObjModelLoader {
         try (var reader = res.get().openAsReader()) {
             Obj obj = ObjUtils.convertToRenderable(ObjReader.read(reader));
 
-            ResourceLocation mtlDirLoc;
+            Identifier mtlDirLoc;
             List<String> mtlFileNames;
 
             String mtlOverride;
             if ((mtlOverride = option.getMtlOverride()) != null) {
                 String[] overrideSplit = mtlOverride.split("/");
 
-                mtlDirLoc = ResourceLocation.parse(String.join("/", ArrayUtils.remove(overrideSplit, overrideSplit.length - 1)));
+                mtlDirLoc = Identifier
+                        .parse(String.join("/", ArrayUtils.remove(overrideSplit, overrideSplit.length - 1)));
                 mtlFileNames = ImmutableList.of(overrideSplit[overrideSplit.length - 1]);
             } else {
                 String[] mtlDirPaths = modelLocation.getPath().split("/");
                 mtlDirPaths = ArrayUtils.remove(mtlDirPaths, mtlDirPaths.length - 1);
 
-                mtlDirLoc = ResourceLocation.fromNamespaceAndPath(modelLocation.getNamespace(), String.join("/", mtlDirPaths));
+                mtlDirLoc = Identifier.fromNamespaceAndPath(modelLocation.getNamespace(),
+                        String.join("/", mtlDirPaths));
                 mtlFileNames = obj.getMtlFileNames();
             }
 
@@ -77,18 +82,19 @@ public class ObjModelLoaderImp implements ObjModelLoader {
         if (loadedResource instanceof ObjModelLoadedResource objRes) {
             return new ObjUnbakedModelModel(objRes.location(), objRes.obj(), objRes.mtl(), objRes.option());
         } else {
-            throw new IllegalArgumentException("A loaded resource that is not an OBJ model was received as an argument.");
+            throw new IllegalArgumentException(
+                    "A loaded resource that is not an OBJ model was received as an argument.");
         }
     }
 
-    private Map<String, Mtl> loadMtl(ResourceManager resourceManager, ResourceLocation location, List<String> mtlNames) {
+    private Map<String, Mtl> loadMtl(ResourceManager resourceManager, Identifier location, List<String> mtlNames) {
         return mtlNames.stream()
                 .flatMap(r -> loadMtl(resourceManager, location, r).stream())
                 .collect(Collectors.toMap(Mtl::getName, r -> r));
     }
 
-    private List<Mtl> loadMtl(ResourceManager resourceManager, ResourceLocation location, String mtlName) {
-        var loc = ResourceLocation.fromNamespaceAndPath(location.getNamespace(), location.getPath() + "/" + mtlName);
+    private List<Mtl> loadMtl(ResourceManager resourceManager, Identifier location, String mtlName) {
+        var loc = Identifier.fromNamespaceAndPath(location.getNamespace(), location.getPath() + "/" + mtlName);
         return resourceManager.getResource(loc).map(res -> {
             try (var reader = res.openAsReader()) {
                 return MtlReader.read(reader);

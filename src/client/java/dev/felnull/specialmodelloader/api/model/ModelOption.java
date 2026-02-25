@@ -2,16 +2,17 @@ package dev.felnull.specialmodelloader.api.model;
 
 import com.google.gson.JsonObject;
 import dev.felnull.specialmodelloader.impl.model.ModelOptionImpl;
-import net.minecraft.client.renderer.block.model.BlockModel;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.client.resources.model.UnbakedModel;
+import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public interface ModelOption {
 
     @NotNull
-    static ModelOption of(boolean useAmbientOcclusion, @Nullable BlockModel.GuiLight guiLight, @Nullable ResourceLocation particle, @NotNull ItemTransforms transforms) {
+    static ModelOption of(boolean useAmbientOcclusion, @Nullable UnbakedModel.GuiLight guiLight,
+            @Nullable Identifier particle, @NotNull ItemTransforms transforms) {
         return new ModelOptionImpl(useAmbientOcclusion, guiLight, particle, transforms);
     }
 
@@ -23,10 +24,10 @@ public interface ModelOption {
     boolean isUseAmbientOcclusion();
 
     @Nullable
-    BlockModel.GuiLight getGuiLight();
+    UnbakedModel.GuiLight getGuiLight();
 
     @Nullable
-    ResourceLocation getParticle();
+    Identifier getParticle();
 
     @NotNull
     ItemTransforms getTransforms();

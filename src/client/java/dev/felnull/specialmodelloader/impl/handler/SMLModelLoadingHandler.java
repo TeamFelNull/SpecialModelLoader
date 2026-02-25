@@ -8,7 +8,8 @@ import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelModifier;
 import net.fabricmc.fabric.api.client.model.loading.v1.PreparableModelLoadingPlugin;
 import net.minecraft.client.resources.model.UnbakedModel;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
+import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.server.packs.resources.ResourceManager;
 
 import java.util.Map;
@@ -22,9 +23,10 @@ public final class SMLModelLoadingHandler {
         PreparableModelLoadingPlugin.register(SMLModelLoadingHandler::loadPrepareData, new MyModelLoadingPlugin());
     }
 
-    private static UnbakedModel modifyModelOnLoad(PreparationData data, UnbakedModel original, ModelModifier.OnLoad.Context context) {
+    private static UnbakedModel modifyModelOnLoad(PreparationData data, UnbakedModel original,
+            ModelModifier.OnLoad.Context context) {
 
-        ResourceLocation resId = context.id();
+        Identifier resId = context.id();
         if (resId != null) {
             LoadedResource loadedResource = data.resources().get(resId);
             if (loadedResource != null) {
@@ -35,25 +37,30 @@ public final class SMLModelLoadingHandler {
         return original;
     }
 
-    private static CompletableFuture<PreparationData> loadPrepareData(ResourceManager resourceManager, Executor executor) {
-        CompletableFuture<Predicate<ResourceLocation>> loadScopePredicates = SpecialModelLoaderEvents.LOAD_SCOPE_ASYNC.invoker().provideAsyncLoadScopePredicate(resourceManager, executor);
+    private static CompletableFuture<PreparationData> loadPrepareData(PreparableReloadListener.SharedState sharedState,
+            Executor executor) {
+        ResourceManager resourceManager = sharedState.resourceManager();
+        CompletableFuture<Predicate<Identifier>> loadScopePredicates = SpecialModelLoaderEvents.LOAD_SCOPE_ASYNC
+                .invoker().provideAsyncLoadScopePredicate(resourceManager, executor);
         return loadScopePredicates.thenApplyAsync((lpPre) -> {
-            ImmutableMap.Builder<ResourceLocation, LoadedResource> resBuilder = ImmutableMap.builder();
+            ImmutableMap.Builder<Identifier, LoadedResource> resBuilder = ImmutableMap.builder();
 
-            resourceManager.listResources("models", loc -> loc.getPath().endsWith(".json")).forEach((location, resource) -> {
-                String path = location.getPath().substring("models/".length());
-                path = path.substring(0, path.length() - ".json".length());
-                ResourceLocation modelLoc = ResourceLocation.fromNamespaceAndPath(location.getNamespace(), path);
+            resourceManager.listResources("models", loc -> loc.getPath().endsWith(".json"))
+                    .forEach((location, resource) -> {
+                        String path = location.getPath().substring("models/".length());
+                        path = path.substring(0, path.length() - ".json".length());
+                        Identifier modelLoc = Identifier.fromNamespaceAndPath(location.getNamespace(), path);
 
-                if (!lpPre.test(modelLoc)) {
-                    return;
-                }
+                        if (!lpPre.test(modelLoc)) {
+                            return;
+                        }
 
-                LoadedResource res = SpecialModelLoaderAPI.getInstance().loadResource(resourceManager, modelLoc);
-                if (res != null) {
-                    resBuilder.put(modelLoc, res);
-                }
-            });
+                        LoadedResource res = SpecialModelLoaderAPI.getInstance().loadResource(resourceManager,
+                                modelLoc);
+                        if (res != null) {
+                            resBuilder.put(modelLoc, res);
+                        }
+                    });
 
             return new PreparationData(resBuilder.build());
         }, executor);
@@ -66,6 +73,6 @@ public final class SMLModelLoadingHandler {
         }
     }
 
-    private record PreparationData(Map<ResourceLocation, LoadedResource> resources) {
+    private record PreparationData(Map<Identifier, LoadedResource> resources) {
     }
 }
