@@ -13,12 +13,14 @@ import net.fabricmc.fabric.api.renderer.v1.mesh.MutableQuadView;
 import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
 import net.fabricmc.fabric.api.renderer.v1.model.MeshBakedGeometry;
 import net.fabricmc.fabric.impl.client.indigo.renderer.IndigoRenderer;
-import net.minecraft.client.renderer.texture.TextureAtlas;
+import net.minecraft.client.renderer.block.model.TextureSlots;
 import net.minecraft.client.resources.model.*;
 import net.minecraft.resources.Identifier;
 import org.joml.Vector3f;
 
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class ObjUnbakedModelModel extends SpecialBaseUnbakedModel {
     private final Identifier location;
@@ -32,6 +34,45 @@ public class ObjUnbakedModelModel extends SpecialBaseUnbakedModel {
         this.obj = obj;
         this.mtl = mtl;
         this.option = option;
+    }
+
+    @Override
+    public TextureSlots.Data textureSlots() {
+        // Collect all texture identifiers referenced by MTL files and option textures
+        // so they are included in the texture atlas
+        Set<Identifier> textures = new HashSet<>();
+
+        // Add textures from MTL materials
+        for (Mtl material : mtl.values()) {
+            String tex = material.getMapKd();
+            if (tex != null && !tex.startsWith("#")) {
+                textures.add(Identifier.parse(tex));
+            }
+        }
+
+        // Add textures from option texture overrides
+        textures.addAll(option.getTextures().values());
+
+        // Add particle texture
+        if (getModelOption().getParticle() != null) {
+            textures.add(getModelOption().getParticle());
+        }
+
+        // Build TextureSlots.Data with all textures declared as named slots
+        com.google.gson.JsonObject jo = new com.google.gson.JsonObject();
+        int idx = 0;
+        for (Identifier tex : textures) {
+            jo.addProperty("sml_tex_" + idx, tex.toString());
+            idx++;
+        }
+        if (getModelOption().getParticle() != null) {
+            jo.addProperty(UnbakedModel.PARTICLE_TEXTURE_REFERENCE, getModelOption().getParticle().toString());
+        } else if (!textures.isEmpty()) {
+            // Default particle to the first available texture
+            jo.addProperty(UnbakedModel.PARTICLE_TEXTURE_REFERENCE, textures.iterator().next().toString());
+        }
+
+        return TextureSlots.parseTextureMap(jo);
     }
 
     @Override
@@ -87,7 +128,7 @@ public class ObjUnbakedModelModel extends SpecialBaseUnbakedModel {
         }
 
         if (texLoc != null) {
-            emitter.spriteBake(spriteGetter.get(new Material(TextureAtlas.LOCATION_BLOCKS, texLoc), debugName), flg);
+            emitter.spriteBake(spriteGetter.get(new Material(ModelManager.BLOCK_OR_ITEM, texLoc), debugName), flg);
         } else {
             emitter.spriteBake(spriteGetter.get(MISSING, debugName), flg);
         }
