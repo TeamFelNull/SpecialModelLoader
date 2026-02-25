@@ -4,7 +4,7 @@ import com.google.gson.JsonObject;
 import dev.felnull.specialmodelloader.impl.SpecialModelLoader;
 import net.minecraft.client.data.models.model.ModelInstance;
 import net.minecraft.client.data.models.model.ModelLocationUtils;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import org.jetbrains.annotations.NotNull;
@@ -15,11 +15,13 @@ import java.util.Map;
 import java.util.function.BiConsumer;
 
 public final class SpecialModelDataGenHelper {
-    private static final ResourceLocation OBJ_LOADER = ResourceLocation.fromNamespaceAndPath(SpecialModelLoader.MODID, "builtin/obj");
+    private static final Identifier OBJ_LOADER = Identifier.fromNamespaceAndPath(SpecialModelLoader.MODID,
+            "builtin/obj");
 
-    public static void generateObjModel(@NotNull ResourceLocation location, @NotNull ResourceLocation objLocation,
-                                        boolean flipV, boolean useAmbientOcclusion, @Nullable String mtlOverride, @Unmodifiable @NotNull Map<String, ResourceLocation> textures,
-                                        @Nullable ResourceLocation particle, @NotNull BiConsumer<ResourceLocation, ModelInstance> output) {
+    public static void generateObjModel(@NotNull Identifier location, @NotNull Identifier objLocation,
+            boolean flipV, boolean useAmbientOcclusion, @Nullable String mtlOverride,
+            @Unmodifiable @NotNull Map<String, Identifier> textures,
+            @Nullable Identifier particle, @NotNull BiConsumer<Identifier, ModelInstance> output) {
 
         output.accept(location, () -> {
             var jo = new JsonObject();
@@ -48,15 +50,19 @@ public final class SpecialModelDataGenHelper {
         });
     }
 
-    public static void generateObjModel(@NotNull Item item, @NotNull ResourceLocation objLocation,
-                                        boolean flipV, boolean useAmbientOcclusion, @Nullable String mtlOverride, @Unmodifiable @NotNull Map<String, ResourceLocation> textures,
-                                        @Nullable ResourceLocation particle, @NotNull BiConsumer<ResourceLocation, ModelInstance> output) {
-        generateObjModel(ModelLocationUtils.getModelLocation(item), objLocation, flipV, useAmbientOcclusion, mtlOverride, textures, particle, output);
+    public static void generateObjModel(@NotNull Item item, @NotNull Identifier objLocation,
+            boolean flipV, boolean useAmbientOcclusion, @Nullable String mtlOverride,
+            @Unmodifiable @NotNull Map<String, Identifier> textures,
+            @Nullable Identifier particle, @NotNull BiConsumer<Identifier, ModelInstance> output) {
+        generateObjModel(ModelLocationUtils.getModelLocation(item), objLocation, flipV, useAmbientOcclusion,
+                mtlOverride, textures, particle, output);
     }
 
-    public static void generateObjModel(@NotNull Block block, @NotNull ResourceLocation objLocation,
-                                        boolean flipV, boolean useAmbientOcclusion, @Nullable String mtlOverride, @Unmodifiable @NotNull Map<String, ResourceLocation> textures,
-                                        @Nullable ResourceLocation particle, @NotNull BiConsumer<ResourceLocation, ModelInstance> output) {
-        generateObjModel(ModelLocationUtils.getModelLocation(block), objLocation, flipV, useAmbientOcclusion, mtlOverride, textures, particle, output);
+    public static void generateObjModel(@NotNull Block block, @NotNull Identifier objLocation,
+            boolean flipV, boolean useAmbientOcclusion, @Nullable String mtlOverride,
+            @Unmodifiable @NotNull Map<String, Identifier> textures,
+            @Nullable Identifier particle, @NotNull BiConsumer<Identifier, ModelInstance> output) {
+        generateObjModel(ModelLocationUtils.getModelLocation(block), objLocation, flipV, useAmbientOcclusion,
+                mtlOverride, textures, particle, output);
     }
 }

@@ -3,7 +3,7 @@ package dev.felnull.specialmodelloader.api.model;
 import com.google.gson.JsonObject;
 import dev.felnull.specialmodelloader.impl.SpecialModelLoader;
 import net.minecraft.client.resources.model.UnbakedModel;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.ResourceManager;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -11,13 +11,15 @@ import org.jetbrains.annotations.Nullable;
 public interface ModelLoader {
 
     /**
-     * Load the resource needed to create the model from the Resource Manager and Model Json.
+     * Load the resource needed to create the model from the Resource Manager and
+     * Model Json.
      *
      * @param resourceManager Resource Manager
      * @param modelJson       Model json
      * @return Loaded Model, null if not loaded.
      */
-    @Nullable LoadedResource loadResource(@NotNull ResourceManager resourceManager, @NotNull JsonObject modelJson);
+    @Nullable
+    LoadedResource loadResource(@NotNull ResourceManager resourceManager, @NotNull JsonObject modelJson);
 
     /**
      * Make model from loaded resources.
@@ -25,7 +27,8 @@ public interface ModelLoader {
      * @param loadedResource Loaded resource
      * @return UnbakedModel
      */
-    @NotNull UnbakedModel makeModel(@NotNull LoadedResource loadedResource);
+    @NotNull
+    UnbakedModel makeModel(@NotNull LoadedResource loadedResource);
 
     /**
      * Load model from Resource Manager and Model Json.
@@ -49,7 +52,8 @@ public interface ModelLoader {
      *
      * @return ID
      */
-    @Nullable String getId();
+    @Nullable
+    String getId();
 
     /**
      * Whether the model uses this model loader or not.
@@ -57,7 +61,7 @@ public interface ModelLoader {
      * @param modelLocation Model Location
      * @return true if this loader is used, false if not.
      */
-    default boolean isLoaderLocation(@NotNull ResourceLocation modelLocation) {
+    default boolean isLoaderLocation(@NotNull Identifier modelLocation) {
         if (SpecialModelLoader.MODID.equals(modelLocation.getNamespace()) || "sml".equals(modelLocation.getNamespace()))
             return modelLocation.getPath().equals("builtin/" + getId());
         return false;

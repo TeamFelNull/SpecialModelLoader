@@ -7,8 +7,7 @@
   "authors": [
     "MORIMORI0317"
   ],
-  "contact": {
-  },
+  "contact": {},
   "license": "IKISUGI",
   "environment": "*",
   "entrypoints": {
@@ -23,7 +22,7 @@
     ]
   },
   "depends": {
-    "fabricloader": ">=0.16.9",
+    "fabricloader": ">=0.18.4",
     "java": ">=21",
     "fabric-api": "*"
   }

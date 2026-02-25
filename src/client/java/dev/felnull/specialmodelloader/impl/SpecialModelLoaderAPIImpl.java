@@ -11,7 +11,7 @@ import dev.felnull.specialmodelloader.impl.model.NeoForgeCompat;
 import dev.felnull.specialmodelloader.impl.model.obj.ObjModelLoaderImp;
 import dev.felnull.specialmodelloader.impl.util.JsonUtils;
 import net.minecraft.client.resources.model.UnbakedModel;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.GsonHelper;
 import org.apache.commons.lang3.tuple.Pair;
@@ -32,25 +32,27 @@ public class SpecialModelLoaderAPIImpl implements SpecialModelLoaderAPI {
     }
 
     @Override
-    public @Nullable LoadedResource loadResource(@NotNull ResourceManager resourceManager, @NotNull ResourceLocation modelLocation) {
+    public @Nullable LoadedResource loadResource(@NotNull ResourceManager resourceManager,
+            @NotNull Identifier modelLocation) {
         List<JsonObject> models = new ArrayList<>();
         JsonObject jo = readJson(resourceManager, modelLocation);
 
         if (NeoForgeCompat.isEnable()) {
-            Pair<ResourceLocation, ObjModelOption> forgeModel = NeoForgeCompat.getObjModelData(jo);
+            Pair<Identifier, ObjModelOption> forgeModel = NeoForgeCompat.getObjModelData(jo);
             if (forgeModel != null) {
                 return getObjLoader().loadResource(resourceManager, forgeModel.getLeft(), forgeModel.getRight());
             }
         }
 
-        ResourceLocation location = JsonUtils.getParentLocation(jo);
-        Set<ResourceLocation> parents = new HashSet<>();
+        Identifier location = JsonUtils.getParentLocation(jo);
+        Set<Identifier> parents = new HashSet<>();
 
         while (location != null) {
             models.add(jo);
 
             if (parents.contains(location)) {
-                SpecialModelLoader.LOGGER.warn("Model parent specification is looping: '{}', '{}'", modelLocation, location);
+                SpecialModelLoader.LOGGER.warn("Model parent specification is looping: '{}', '{}'", modelLocation,
+                        location);
                 return null;
             }
 
@@ -81,7 +83,7 @@ public class SpecialModelLoaderAPIImpl implements SpecialModelLoaderAPI {
         return loaders;
     }
 
-    private ModelLoader getLoader(ResourceLocation location) {
+    private ModelLoader getLoader(Identifier location) {
         return getLoaders().stream()
                 .filter(r -> r.isLoaderLocation(location))
                 .limit(1)
@@ -89,10 +91,12 @@ public class SpecialModelLoaderAPIImpl implements SpecialModelLoaderAPI {
                 .orElse(null);
     }
 
-    private JsonObject readJson(ResourceManager resourceManager, ResourceLocation modelLocation) {
-        ResourceLocation modelPath = ResourceLocation.fromNamespaceAndPath(modelLocation.getNamespace(), "models/" + modelLocation.getPath() + ".json");
+    private JsonObject readJson(ResourceManager resourceManager, Identifier modelLocation) {
+        Identifier modelPath = Identifier.fromNamespaceAndPath(modelLocation.getNamespace(),
+                "models/" + modelLocation.getPath() + ".json");
         var res = resourceManager.getResource(modelPath);
-        if (res.isEmpty()) return null;
+        if (res.isEmpty())
+            return null;
         JsonObject jo;
         try (var reader = res.get().openAsReader()) {
             jo = GsonHelper.parse(reader);
